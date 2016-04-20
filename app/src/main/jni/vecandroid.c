@@ -139,8 +139,14 @@ unary_logger ( jstring * result, JNIEnv* env, jobject thiz,
                 free(str);
                 goto EXIT;
             }
-            strlcat(buffer, "Test failed.\n Output:   [", sizeof buffer);
+            strlcat(buffer, "Test failed.\n Input:   [", sizeof buffer);
             int i;
+            for (i = 0; i < length; i++) {
+                asprintf(&str, "%d, ", input[i]);
+                strlcat(buffer, str, sizeof buffer);
+                free(str);
+            }
+            strlcat(buffer, "] \n Output:   [", sizeof buffer);
             for (i = 0; i < length; i++) {
                 asprintf(&str, "%d, ", output[i]);
                 strlcat(buffer, str, sizeof buffer);
@@ -525,7 +531,7 @@ floatAbsSerial(float *output, float *input, int N)
     float x;
     for (i = 0; i < N; i++) {
         x = input[i];
-        if (x < 0) {
+        if (x < 0.f) {
             output[i] = -x;
         } else {
             output[i] = x;
@@ -541,18 +547,19 @@ Java_com_example_vecandroid_VecAndroid_intAbsBench( JNIEnv* env,
     jstring result;
     char *str;
     asprintf(&str, "Absolute value (integers)");
-    int length = 1024; // power of 4
+    int length = 1027;
     int output[length];
     int output_expected[length];
     int input[length];
 
     int i;
+    srand(time(NULL));
     for (i = 0; i < length; i++) {
-        input[i] = (int) (-5 + (rand() % 10));
+        input[i] = (int) (-50 + (rand() % 100));
         output[i] = (int) 0;
     }
     int array_type = 0; // int
-    logger(&result, env, thiz, str, &intAbsSerial, &intAbsVector, output, input, output_expected, length, array_type);
+    unary_logger(&result, env, thiz, str, &intAbsSerial, &intAbsVector, output, input, output_expected, length, array_type);
     // loggerTest(&result, env, thiz, 2, 3);
     // free(str);
     return result;
@@ -568,19 +575,20 @@ Java_com_example_vecandroid_VecAndroid_floatAbsBench( JNIEnv* env,
     jstring result;
     char *str;
     asprintf(&str, "Absolute value (floating points)");
-    int length = 1024; // power of 4
+    int length = 1027;
     float output[length];
     float output_expected[length];
     float input[length];
 
     int i;
+    srand(time(NULL));
     for (i = 0; i < length; i++) {
         // input[i] = (int) (-5 + (rand() % 10));
         input[i] = -1.f + 4.f * (float)(rand()) / RAND_MAX;
         output[i] = 0.f;
     }
     int array_type = 1; // float
-    logger(&result, env, thiz, str, &floatAbsSerial, &floatAbsVector, output, input, output_expected, length, array_type);
+    unary_logger(&result, env, thiz, str, &floatAbsSerial, &floatAbsVector, output, input, output_expected, length, array_type);
     // loggerTest(&result, env, thiz, 2, 3);
     // free(str);
     return result;
@@ -617,7 +625,7 @@ Java_com_example_vecandroid_VecAndroid_intAddBench( JNIEnv* env,
     jstring result;
     char *str;
     asprintf(&str, "Entry-wise add (integers)");
-    int length = 1024; // power of 4
+    int length = 1027;
     int output[length];
     int output_expected[length];
     int input1[length];
@@ -661,7 +669,7 @@ Java_com_example_vecandroid_VecAndroid_floatAddBench( JNIEnv* env,
     jstring result;
     char *str;
     asprintf(&str, "Entry-wise add (floating points)");
-    int length = 1024; // power of 4
+    int length = 1027;
     float output[length];
     float output_expected[length];
     float input1[length];
@@ -703,7 +711,7 @@ Java_com_example_vecandroid_VecAndroid_intSubBench( JNIEnv* env,
     jstring result;
     char *str;
     asprintf(&str, "Entry-wise subtract (integers)");
-    int length = 1024; // power of 4
+    int length = 1027;
     int output[length];
     int output_expected[length];
     int input1[length];
@@ -747,7 +755,7 @@ Java_com_example_vecandroid_VecAndroid_floatSubBench( JNIEnv* env,
     jstring result;
     char *str;
     asprintf(&str, "Entry-wise subtract (floating points)");
-    int length = 1024; // power of 4
+    int length = 1027;
     float output[length];
     float output_expected[length];
     float input1[length];
@@ -789,7 +797,7 @@ Java_com_example_vecandroid_VecAndroid_intMulBench( JNIEnv* env,
     jstring result;
     char *str;
     asprintf(&str, "Entry-wise multiply (integers)");
-    int length = 1024; // power of 4
+    int length = 1027;
     int output[length];
     int output_expected[length];
     int input1[length];
@@ -833,7 +841,7 @@ Java_com_example_vecandroid_VecAndroid_floatMulBench( JNIEnv* env,
     jstring result;
     char *str;
     asprintf(&str, "Entry-wise multiply (floating points)");
-    int length = 1024; // power of 4
+    int length = 1027;
     float output[length];
     float output_expected[length];
     float input1[length];

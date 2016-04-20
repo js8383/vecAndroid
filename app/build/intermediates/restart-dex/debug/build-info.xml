@@ -4,11 +4,11 @@
     api-level="23"
     density="xxhdpi"
     format="7"
-    timestamp="1461116417553007000" >
+    timestamp="1461122519232284000" >
 
     <task
         name="javac"
-        duration="1510" />
+        duration="0" />
     <task
         name="instant-run-dex"
         duration="0" />
@@ -19,6 +19,14 @@
         name="verifier"
         duration="0" />
 
-    <build timestamp="1461116417553007000" />
+    <artifact
+        location="/Users/yongshanding/AndroidStudioProjects/vecAndroid/app/build/outputs/apk/app-debug.apk"
+        type="MAIN" />
+
+    <build timestamp="1461122519232284000" >
+        <artifact
+            location="/Users/yongshanding/AndroidStudioProjects/vecAndroid/app/build/outputs/apk/app-debug.apk"
+            type="MAIN" />
+    </build>
 
 </instant-run>
