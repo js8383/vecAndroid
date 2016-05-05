@@ -1,6 +1,9 @@
 #ifndef VECANDROID_INTRINSICS_H
 #define VECANDROID_INTRINSICS_H
 
+/* Just for testing */
+void testingVector(int *output, int *input, int N);
+
 void intAbsVector(int *output, int *input, int N);
 
 void floatAbsVector(float *output, float *input, int N);

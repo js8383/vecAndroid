@@ -19,6 +19,7 @@ public class VecAndroid extends Activity
          * function.
          */
         LinearLayout linearLayout = (LinearLayout)findViewById(R.id.benchmark);
+        TextView  tv0 = new TextView(this);
         TextView  tv1 = new TextView(this);
         TextView  tv2 = new TextView(this);
         TextView  tv3 = new TextView(this);
@@ -33,7 +34,7 @@ public class VecAndroid extends Activity
         TextView  tv12 = new TextView(this);
 //        tv.setText( stringFromJNI() );
 //        tv.setText( myTest(5,3) );
-//        tv.setText( testings() );
+        tv0.setText( testings() );
         tv1.setText( intAbsBench() );
         tv2.setText( floatAbsBench() );
         tv3.setText( intAddBench() );
@@ -48,6 +49,7 @@ public class VecAndroid extends Activity
         tv12.setText( floatGeBench() );
 
 //        setContentView(tv);
+        linearLayout.addView(tv0);
         linearLayout.addView(tv1);
         linearLayout.addView(tv2);
         linearLayout.addView(tv3);
@@ -69,7 +71,7 @@ public class VecAndroid extends Activity
      */
 //    public native String stringFromJNI();
 //    public native String myTest(int n1, int n2);
-//    public native String testings();
+    public native String testings();
     public native String intAbsBench();
     public native String floatAbsBench();
     public native String intAddBench();

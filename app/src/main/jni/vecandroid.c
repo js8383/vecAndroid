@@ -575,13 +575,13 @@ Java_com_example_vecandroid_VecAndroid_floatAbsBench( JNIEnv* env,
     jstring result;
     char *str;
     asprintf(&str, "Absolute value (floating points)");
-    int length = 1027;
+    int length = 7;
     float output[length];
     float output_expected[length];
     float input[length];
 
     int i;
-    srand(time(NULL));
+    // srand(time(NULL));
     for (i = 0; i < length; i++) {
         // input[i] = (int) (-5 + (rand() % 10));
         input[i] = -1.f + 4.f * (float)(rand()) / RAND_MAX;
@@ -887,7 +887,7 @@ Java_com_example_vecandroid_VecAndroid_intEqBench( JNIEnv* env,
     jstring result;
     char *str;
     asprintf(&str, "Entry-wise comparison (equal) on integers");
-    int length = 1024; // power of 4
+    int length = 1027;
     uint32_t output[length];
     uint32_t output_expected[length];
     int input1[length];
@@ -1049,6 +1049,21 @@ Java_com_example_vecandroid_VecAndroid_floatGeBench( JNIEnv* env,
 
 /***********************************************/
 
+/* this is the serial testings */
+static void
+testingSerial(int *output, int *input, int N)
+{
+    int i;
+    int x;
+    for (i = 0; i < N; i++) {
+        x = input[i];
+        if (x < 0) {
+            output[i] = -x;
+        } else {
+            output[i] = x;
+        }
+    }
+}
 
 /* this is the testing function */
 jstring
@@ -1057,8 +1072,8 @@ Java_com_example_vecandroid_VecAndroid_testings( JNIEnv* env,
 {
     jstring result;
     char *str;
-    asprintf(&str, "Absolute value (integers)");
-    int length = 1024; // power of 4
+    asprintf(&str, "Testings: Absolute value (integers)");
+    int length = 1001; // power of 4
     int output[length];
     int output_expected[length];
     int input[length];
@@ -1070,7 +1085,7 @@ Java_com_example_vecandroid_VecAndroid_testings( JNIEnv* env,
         output[i] = (int) 0;
     }
     int array_type = 0; // int
-    logger(&result, env, thiz, str, &intAbsSerial, &intAbsVector, output, input, output_expected, length, array_type);
+    logger(&result, env, thiz, str, &testingSerial, &testingVector, output, input, output_expected, length, array_type);
     // loggerTest(&result, env, thiz, 2, 3);
     // free(str);
     return result;
