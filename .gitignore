@@ -35,3 +35,7 @@ local.properties
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# built native files (uncomment if you build your own)
+# *.o
+# *.so

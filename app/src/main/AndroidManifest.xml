@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.vecandroid.bench"
-          android:versionCode="1"
-          android:versionName="1.0">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.bench"
+    android:versionCode="1"
+    android:versionName="1.0">
   <application
-      android:allowBackup="false"
+      android:allowBackup="true"
       android:fullBackupContent="false"
       android:icon="@mipmap/ic_launcher"
-      android:label="VecAndroid">
-    <activity android:name="com.vecandroid.bench.VecAndroidBench"
+      android:label="example">
+    <activity android:name="com.example.bench.VecAndroidBench"
               android:label="VecAndroid">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
