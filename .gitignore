@@ -30,6 +30,7 @@ local.properties
 # OS-specific files
 .DS_Store
 .DS_Store?
+/*/.DS_Store
 ._*
 .Spotlight-V100
 .Trashes
@@ -39,3 +40,6 @@ Thumbs.db
 # built native files (uncomment if you build your own)
 *.o
 *.so
+
+# vecandroid compiler cache files
+__pycache__/

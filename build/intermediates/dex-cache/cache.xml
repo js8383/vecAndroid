@@ -2,25 +2,25 @@
 <items version="2" >
 
     <item
-        jar="/Users/Jason/Documents/S16-project/15418/vecAndroid/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jar="/Users/yongshanding/AndroidStudioProjects/vecAndroid/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
         jumboMode="true"
         revision="23.0.3"
-        sha1="fe09e0df2193d8f93a8dd354517fbe0afa00a662">
-        <dex dex="/Users/Jason/Documents/S16-project/15418/vecAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_e030e0484263793aa03bf3488a93189fa7ed8284/classes.dex" />
+        sha1="eda1637790c16e174014db5ca1a5234c9151cb8d">
+        <dex dex="/Users/yongshanding/AndroidStudioProjects/vecAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_36b3cdfa46933760ad374b0c63e58b7bbce92ed4/classes.dex" />
     </item>
     <item
-        jar="/Users/Jason/Documents/S16-project/15418/vecAndroid/app/build/intermediates/exploded-aar/apitemplate-release/jars/classes.jar"
+        jar="/Users/yongshanding/AndroidStudioProjects/vecAndroid/app/build/intermediates/exploded-aar/apitemplate-release/jars/classes.jar"
         jumboMode="true"
         revision="23.0.3"
         sha1="e90f302e8ebb955cc543bfc534c054c03000bc06">
-        <dex dex="/Users/Jason/Documents/S16-project/15418/vecAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/intermediates-exploded-aar-apitemplate-release_b88ba42a73c919506d96b9f9eec4d16553928a3d/classes.dex" />
+        <dex dex="/Users/yongshanding/AndroidStudioProjects/vecAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/intermediates-exploded-aar-apitemplate-release_4a4445d61a53f691c41ee9b72fd5a72980e4b6d8/classes.dex" />
     </item>
     <item
-        jar="/Users/Jason/Documents/S16-project/15418/vecAndroid/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jar="/Users/yongshanding/AndroidStudioProjects/vecAndroid/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
         jumboMode="true"
         revision="23.0.3"
-        sha1="de11ba31f638961166b7b312726fa35f859c6003">
-        <dex dex="/Users/Jason/Documents/S16-project/15418/vecAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_f53a3e5076955ce8590139352697c6083b13366e/classes.dex" />
+        sha1="cdad6e95c289f39e4458cebf1adad63c66264287">
+        <dex dex="/Users/yongshanding/AndroidStudioProjects/vecAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_d7cf807c17256709403396cdb4a1ff96b532a367/classes.dex" />
     </item>
 
 </items>

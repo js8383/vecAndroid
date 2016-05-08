@@ -1,16 +1,17 @@
 /*******************************************************************************
-*                        VecPy generated kernel: volume                        *
+*                           Generated kernel: volume                           *
 *******************************************************************************/
 //Integer types
 #include <stdint.h>
-#include "vecpy_volume_kernel.h"
+#include "vecandroid_volume_kernel.h"
 
 /*******************************************************************************
 *                      Target Architecture: NEON (float)                       *
 *******************************************************************************/
 //Includes
 #include <math.h>
-// #include <algorithm>
+//#include <algorithm>
+
 //Kernel function: volume
 void volume_scalar(KernelArgs* args) {
 
@@ -27,9 +28,10 @@ void volume_scalar(KernelArgs* args) {
     float radius, volume, var004, var005, var006, var010;
     
     //Stack variables (boolean)
-    uint64_t index;
+    
     //Loop over input
-    for( index = 0; index < args->N; ++index) {
+    uint64_t index;
+    for(index = 0; index < args->N; ++index) {
     
         //Inputs
         radius = args->radius[index];
@@ -81,9 +83,10 @@ void volume_vector(KernelArgs* args) {
     
     //Stack variables
     float32x4_t radius, volume, var004, var005, var006, var010;
-    uint64_t index;
+    
     //Loop over input
-    for( index = 0; index < args->N; index += 4) {
+    uint64_t index;
+    for(index = 0; index < args->N; index += 4) {
     
         //Inputs
         radius = vld1q_f32(&args->radius[index]);

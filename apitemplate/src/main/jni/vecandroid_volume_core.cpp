@@ -1,11 +1,11 @@
 /*******************************************************************************
-*                             VecPy generated core                             *
+*                                Generated core                                *
 *******************************************************************************/
 //Includes
 #include <pthread.h>
 #include <stdio.h>
 extern "C" {
-    #include "vecpy_volume_kernel.h"
+    #include "vecandroid_volume_kernel.h"
 }
 
 //Utility functions
@@ -36,7 +36,7 @@ static bool run(KernelArgs* args) {
     }
     //Compile-time constants
     const uint64_t vectorSize = 4;
-    const uint64_t numThreads = 8;
+    const uint64_t numThreads = 4;
     //Division of labor
     const uint64_t vectorsPerThread = args->N / (vectorSize * numThreads);
     const uint64_t elementsPerThread = vectorsPerThread * vectorSize;
@@ -70,5 +70,5 @@ static bool run(KernelArgs* args) {
 }
 
 //Additional includes for each programming language
-#include "vecpy_volume_java.h"
+#include "vecandroid_volume_java.h"
 

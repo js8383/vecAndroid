@@ -1,7 +1,8 @@
-obj/local/armeabi/objs/vecandroid/vecandroid.o: jni/vecandroid.c \
- /Users/Jason/Documents/AndroidDev/android-sdk-macosx/ndk-bundle/sources/android//cpufeatures/cpu-features.h \
- jni/vecandroid-intrinsics.h
+/Users/yongshanding/AndroidStudioProjects/vecAndroid/apitemplate/src/main/obj/local/armeabi/objs/vecandroid/vecandroid.o: \
+ /Users/yongshanding/AndroidStudioProjects/vecAndroid/apitemplate/src/main/jni/vecandroid.c \
+ /Users/yongshanding/Library/Android/sdk/ndk-bundle/sources/android//cpufeatures/cpu-features.h \
+ /Users/yongshanding/AndroidStudioProjects/vecAndroid/apitemplate/src/main/jni/vecandroid-intrinsics.h
 
-/Users/Jason/Documents/AndroidDev/android-sdk-macosx/ndk-bundle/sources/android//cpufeatures/cpu-features.h:
+/Users/yongshanding/Library/Android/sdk/ndk-bundle/sources/android//cpufeatures/cpu-features.h:
 
-jni/vecandroid-intrinsics.h:
+/Users/yongshanding/AndroidStudioProjects/vecAndroid/apitemplate/src/main/jni/vecandroid-intrinsics.h:
