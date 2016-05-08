@@ -1,2 +1,0 @@
-include ':app', ':apitemplate', ':apitemplate-release'
-include ':cpufeatures'
