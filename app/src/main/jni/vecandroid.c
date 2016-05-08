@@ -541,7 +541,7 @@ floatAbsSerial(float *output, float *input, int N)
 
 /* this is the absolute value function for integers */
 jstring
-Java_com_example_vecandroid_VecAndroid_intAbsBench( JNIEnv* env,
+Java_com_vecandroid_api_MathOps_intAbsBench( JNIEnv* env,
                                                jobject thiz )
 {
     jstring result;
@@ -565,7 +565,213 @@ Java_com_example_vecandroid_VecAndroid_intAbsBench( JNIEnv* env,
     return result;
 }
 
+/* ------------------------------------- New API ----------------------------------------- */
 
+/* this is the absolute value function for integers */
+jintArray
+Java_com_vecandroid_api_MathOps_intAbsNative( JNIEnv* env,
+                                               jobject thiz, jintArray input)
+{
+    jsize length = (*env)->GetArrayLength(env, input);
+    jint *input1 = (*env)->GetIntArrayElements(env, input, 0);
+    jintArray result = (*env)->NewIntArray(env, length);
+    jint output[length];
+
+    intAbsVector(output, input1, length);
+
+    (*env)->SetIntArrayRegion(env, result, 0, length, output);
+    return result;
+}
+
+
+/* this is the absolute value function for floating points */
+jfloatArray
+Java_com_vecandroid_api_MathOps_floatAbsNative( JNIEnv* env,
+                                               jobject thiz, jfloatArray input)
+{
+    jsize length = (*env)->GetArrayLength(env, input);
+    jfloat *input1 = (*env)->GetFloatArrayElements(env, input, 0);
+    jfloatArray result = (*env)->NewFloatArray(env, length);
+    jfloat output[length];
+
+    floatAbsVector(output, input1, length);
+
+    (*env)->SetFloatArrayRegion(env, result, 0, length, output);
+    return result;
+}
+
+
+jintArray
+Java_com_vecandroid_api_MathOps_intAddNative( JNIEnv* env,
+                                               jobject thiz, jintArray input1, jintArray input2)
+{
+    jsize length = (*env)->GetArrayLength(env, input1);
+    jint *input3 = (*env)->GetIntArrayElements(env, input1, 0);
+    jint *input4 = (*env)->GetIntArrayElements(env, input2, 0);
+
+    jintArray result = (*env)->NewIntArray(env, length);
+    jint output[length];
+
+    intAddVector(output, input3, input4, length);
+
+    (*env)->SetIntArrayRegion(env, result, 0, length, output);
+    return result;
+}
+
+jfloatArray
+Java_com_vecandroid_api_MathOps_floatAddNative( JNIEnv* env,
+                                               jobject thiz, jfloatArray input1, jfloatArray input2)
+{
+    jsize length = (*env)->GetArrayLength(env, input1);
+    jfloat *input3 = (*env)->GetFloatArrayElements(env, input1, 0);
+    jfloat *input4 = (*env)->GetFloatArrayElements(env, input2, 0);
+
+    jfloatArray result = (*env)->NewFloatArray(env, length);
+    jfloat output[length];
+
+    floatAddVector(output, input3, input4, length);
+
+    (*env)->SetFloatArrayRegion(env, result, 0, length, output);
+    return result;
+}
+
+jintArray
+Java_com_vecandroid_api_MathOps_intSubNative( JNIEnv* env,
+                                               jobject thiz, jintArray input1, jintArray input2)
+{
+    jsize length = (*env)->GetArrayLength(env, input1);
+    jint *input3 = (*env)->GetIntArrayElements(env, input1, 0);
+    jint *input4 = (*env)->GetIntArrayElements(env, input2, 0);
+
+    jintArray result = (*env)->NewIntArray(env, length);
+    jint output[length];
+
+    intSubVector(output, input3, input4, length);
+
+    (*env)->SetIntArrayRegion(env, result, 0, length, output);
+    return result;
+}
+
+jfloatArray
+Java_com_vecandroid_api_MathOps_floatSubNative( JNIEnv* env,
+                                               jobject thiz, jfloatArray input1, jfloatArray input2)
+{
+    jsize length = (*env)->GetArrayLength(env, input1);
+    jfloat *input3 = (*env)->GetFloatArrayElements(env, input1, 0);
+    jfloat *input4 = (*env)->GetFloatArrayElements(env, input2, 0);
+
+    jfloatArray result = (*env)->NewFloatArray(env, length);
+    jfloat output[length];
+
+    floatSubVector(output, input3, input4, length);
+
+    (*env)->SetFloatArrayRegion(env, result, 0, length, output);
+    return result;
+}
+
+jintArray
+Java_com_vecandroid_api_MathOps_intMulNative( JNIEnv* env,
+                                               jobject thiz, jintArray input1, jintArray input2)
+{
+    jsize length = (*env)->GetArrayLength(env, input1);
+    jint *input3 = (*env)->GetIntArrayElements(env, input1, 0);
+    jint *input4 = (*env)->GetIntArrayElements(env, input2, 0);
+
+    jintArray result = (*env)->NewIntArray(env, length);
+    jint output[length];
+
+    intMulVector(output, input3, input4, length);
+
+    (*env)->SetIntArrayRegion(env, result, 0, length, output);
+    return result;
+}
+
+jfloatArray
+Java_com_vecandroid_api_MathOps_floatMulNative( JNIEnv* env,
+                                               jobject thiz, jfloatArray input1, jfloatArray input2)
+{
+    jsize length = (*env)->GetArrayLength(env, input1);
+    jfloat *input3 = (*env)->GetFloatArrayElements(env, input1, 0);
+    jfloat *input4 = (*env)->GetFloatArrayElements(env, input2, 0);
+
+    jfloatArray result = (*env)->NewFloatArray(env, length);
+    jfloat output[length];
+
+    floatMulVector(output, input3, input4, length);
+
+    (*env)->SetFloatArrayRegion(env, result, 0, length, output);
+    return result;
+}
+
+jintArray
+Java_com_vecandroid_api_MathOps_intEqNative( JNIEnv* env,
+                                               jobject thiz, jintArray input1, jintArray input2)
+{
+    jsize length = (*env)->GetArrayLength(env, input1);
+    jint *input3 = (*env)->GetIntArrayElements(env, input1, 0);
+    jint *input4 = (*env)->GetIntArrayElements(env, input2, 0);
+
+    jintArray result = (*env)->NewIntArray(env, length);
+    jint output[length];
+
+    intEqVector(output, input3, input4, length);
+
+    (*env)->SetIntArrayRegion(env, result, 0, length, output);
+    return result;
+}
+
+jintArray
+Java_com_vecandroid_api_MathOps_floatEqNative( JNIEnv* env,
+                                               jobject thiz, jfloatArray input1, jfloatArray input2)
+{
+    jsize length = (*env)->GetArrayLength(env, input1);
+    jfloat *input3 = (*env)->GetFloatArrayElements(env, input1, 0);
+    jfloat *input4 = (*env)->GetFloatArrayElements(env, input2, 0);
+
+    jintArray result = (*env)->NewIntArray(env, length);
+    jint output[length];
+
+    floatEqVector(output, input3, input4, length);
+
+    (*env)->SetIntArrayRegion(env, result, 0, length, output);
+    return result;
+}
+
+jintArray
+Java_com_vecandroid_api_MathOps_intGeNative( JNIEnv* env,
+                                               jobject thiz, jintArray input1, jintArray input2)
+{
+    jsize length = (*env)->GetArrayLength(env, input1);
+    jint *input3 = (*env)->GetIntArrayElements(env, input1, 0);
+    jint *input4 = (*env)->GetIntArrayElements(env, input2, 0);
+
+    jintArray result = (*env)->NewIntArray(env, length);
+    jint output[length];
+
+    intGeVector(output, input3, input4, length);
+
+    (*env)->SetIntArrayRegion(env, result, 0, length, output);
+    return result;
+}
+
+jintArray
+Java_com_vecandroid_api_MathOps_floatGeNative( JNIEnv* env,
+                                               jobject thiz, jfloatArray input1, jfloatArray input2)
+{
+    jsize length = (*env)->GetArrayLength(env, input1);
+    jfloat *input3 = (*env)->GetFloatArrayElements(env, input1, 0);
+    jfloat *input4 = (*env)->GetFloatArrayElements(env, input2, 0);
+
+    jintArray result = (*env)->NewIntArray(env, length);
+    jint output[length];
+
+    floatGeVector(output, input3, input4, length);
+
+    (*env)->SetIntArrayRegion(env, result, 0, length, output);
+    return result;
+}
+
+/* ------------------------------------- End ----------------------------------------- */
 
 /* this is the absolute value function for floating points */
 jstring
