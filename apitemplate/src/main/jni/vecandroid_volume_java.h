@@ -1,12 +1,12 @@
 /*******************************************************************************
-*                      VecPy generated entry point: Java                       *
+*                        Generated entry point for Java                        *
 *******************************************************************************/
 //Includes
 #include <stdlib.h>
 #include <jni.h>
 
 //Wrapper for the core function
-extern "C" JNIEXPORT jboolean JNICALL Java_com_vecandroid_KernelOps_volume(JNIEnv* env, jclass cls, jobject vp_radius, jobject vp_volume) {
+extern "C" JNIEXPORT jboolean JNICALL Java_com_vecandroid_api_KernelOps_volume(JNIEnv* env, jclass cls, jobject vp_radius, jobject vp_volume) {
     //Make sure the buffers are directly allocated
     jclass Buffer = env->FindClass("java/nio/Buffer");
     jmethodID isDirect = env->GetMethodID(Buffer, "isDirect", "()Z");
@@ -51,12 +51,12 @@ extern "C" JNIEXPORT jboolean JNICALL Java_com_vecandroid_KernelOps_volume(JNIEn
 }
 
 //Aligned allocation
-extern "C" JNIEXPORT jobject JNICALL Java_com_vecandroid_KernelOps_allocate(JNIEnv* env, jclass cls, jlong N) {
+extern "C" JNIEXPORT jobject JNICALL Java_com_vecandroid_api_KernelOps_allocate(JNIEnv* env, jclass cls, jlong N) {
     //Allocate space
     void* buffer = memalign(32, (size_t)N);
     //if(result != 0) {
-    //    printf("Error allocating buffer (%d)\n", result);
-    //    return NULL;
+        //printf("Error allocating buffer (%d)\n", result);
+        //return NULL;
     //}
     //Instantiate a java ByteBuffer
     jobject byteBuffer = env->NewDirectByteBuffer(buffer, N);
@@ -68,7 +68,7 @@ extern "C" JNIEXPORT jobject JNICALL Java_com_vecandroid_KernelOps_allocate(JNIE
 }
 
 //Free
-extern "C" JNIEXPORT jboolean JNICALL Java_com_vecandroid_KernelOps_free(JNIEnv* env, jclass cls, jobject buffer) {
+extern "C" JNIEXPORT jboolean JNICALL Java_com_vecandroid_api_KernelOps_free(JNIEnv* env, jclass cls, jobject buffer) {
     //Make sure the buffer is directly allocated
     jclass Buffer = env->FindClass("java/nio/Buffer");
     jmethodID isDirect = env->GetMethodID(Buffer, "isDirect", "()Z");
