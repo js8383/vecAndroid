@@ -8,10 +8,6 @@ android {
         applicationId "com.example.bench"
         minSdkVersion 21
         targetSdkVersion 23
-
-//        ndk {
-//            moduleName "vecandroid"
-//        }
     }
 
     buildTypes {
@@ -32,6 +28,7 @@ repositories {
 }
 
 dependencies {
-//    compile project(':apitemplate-release')
-    compile(name:'apitemplate-release', ext:'aar')
+    //    compile project(':apitemplate-release')
+    //    compile(name:'apitemplate-release', ext:'aar')
+    compile project(':apitemplate')
 }

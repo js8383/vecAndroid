@@ -14,8 +14,8 @@ endif
 endif
 
 LOCAL_STATIC_LIBRARIES := cpufeatures
-LOCAL_LDLIBS := -llog
 LOCAL_ALLOW_UNDEFINED_SYMBOLS := true
+LOCAL_LDLIBS := -llog
 
 include $(BUILD_SHARED_LIBRARY)
 
@@ -32,8 +32,10 @@ endif
     LOCAL_SRC_FILES += vecpy_volume_kernel.c.neon
 endif
 
+LOCAL_STATIC_LIBRARIES := cpufeatures
 LOCAL_ALLOW_UNDEFINED_SYMBOLS := true
 LOCAL_LDLIBS := -llog
+
 include $(BUILD_SHARED_LIBRARY)
 
 $(call import-module,cpufeatures)
