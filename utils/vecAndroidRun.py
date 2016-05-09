@@ -51,6 +51,14 @@ def makeArr(kernelFile, outputDir):
 	jni_dir = project_dir + "/apitemplate/src/main/jni"
 
 	print("Vectorizing using NEON intrinsics...\n", end="")
+	# Clean direcotry before generating the VecAndroidAPI interface
+	filename1 = main_dir+"/java/com/vecandroid/KernelOps.java"
+	filename2 = main_dir+"/java/com/vecandroid/VecAndroidApi.java"
+	if os.path.exists(filename1):
+		os.remove(filename1)
+	if os.path.exists(filename2):
+		os.remove(filename2)
+		
 	kernel_names = []
 	for k in all_kernels:
 		kernel_names += [k[0]]
