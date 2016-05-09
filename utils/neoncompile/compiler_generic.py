@@ -1,8 +1,8 @@
 # Compiler from David Farrow, vecpy, (2015), GitHub repository, https://github.com/undefx/vecpy.git
 # Modified by Yongshan Ding in May, 2016
 
-from vecandroid.kernel import *
-from vecandroid.compiler_constants import *
+from neoncompile.kernel import *
+from neoncompile.compiler_constants import *
 
 class Compiler_Generic:
 

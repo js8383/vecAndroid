@@ -17,7 +17,7 @@ import inspect
 #Math constants
 import math
 #Language-independent kernel
-from vecandroid.kernel import *
+from neoncompile.kernel import *
 
 #===========================================================
 # Parser class
