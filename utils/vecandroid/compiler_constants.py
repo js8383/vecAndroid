@@ -32,7 +32,7 @@ class Binding:
 
 #Compile time options
 class Options:
-  def __init__(self, arch, type, bindings=(Binding.java,), threads=None, java_package='com_vecandroid_api'):
+  def __init__(self, arch, type, bindings=(Binding.java,), threads=None, java_package='com_vecandroid'):
     if arch is None or type is None or bindings is None or len(bindings) == 0:
       raise Exception('Invalid options')
     #Target architecture

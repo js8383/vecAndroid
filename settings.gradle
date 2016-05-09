@@ -1,2 +1,2 @@
-include ':app', ':apitemplate', ':apitemplate-release'
+include ':app', ':apitemplate'
 include ':cpufeatures'

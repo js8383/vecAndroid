@@ -356,7 +356,7 @@ class Compiler:
     src += 'b2.put(b12);'
     src += 'b1.position(0);'
     src += 'b2.position(0);'
-    src += 'volume(b1, b2);' #function name
+    src += 'volume1(b1, b2);' #function name
     src += 'return(Float.toString(b2.get(2)));'
     src.unindent()
     src += '}'
@@ -417,7 +417,7 @@ class Compiler:
     src.section('Generated kernel: %s'%(k.name))
     src += '//Integer types'
     src += '#include <stdint.h>'
-    src += '#include "vecandroid_volume_kernel.h"'
+    src += '#include "vecandroid_volume1_kernel.h"'
     src += ''
     #Generate an architecture-specific kernel
     src += Compiler_Generic.compile_kernel(k, options)

@@ -4,19 +4,8 @@ import inspect
 import subprocess
 import importlib.util
 import shutil
-
-print("\n--- This is vecAndroid runner ---\n")
-
-# Get the total number of args passed to the demo.py
-total = len(sys.argv)
- 
-# Get the arguments list 
-cmdargs = str(sys.argv)
-
-
-# Print it
-# print ("The total numbers of args passed to the script: %d " % total)
-# print ("Args list: %s " % cmdargs)
+from vecandroid.runtime import *
+from vecandroid.compiler_constants import *
 
 androidmk_singlemodule_template = '''
 include $(CLEAR_VARS)
@@ -45,29 +34,35 @@ def makeArr(kernelFile, outputDir):
 	# try
 
 	print("Reading kernel functions ...", end="")
-	spec = importlib.util.spec_from_file_location("module.name", kernelFile)
-	fileAsModule = importlib.util.module_from_spec(spec)
-	spec.loader.exec_module(fileAsModule)
-	all_kernels = inspect.getmembers(fileAsModule, inspect.isfunction)
+	try:
+		spec = importlib.util.spec_from_file_location("module.name", kernelFile)
+		fileAsModule = importlib.util.module_from_spec(spec)
+		spec.loader.exec_module(fileAsModule)
+		all_kernels = inspect.getmembers(fileAsModule, inspect.isfunction)
+	except:
+		print("Please make sure your python file is valid and contains no indentation error!")
+		return
 	print("Done!\n")
 
 	# Some dirs 
 	script_parent_dir = os.path.abspath(os.path.dirname(__file__))
 	project_dir = script_parent_dir[:script_parent_dir.rfind("/")];
+	main_dir = project_dir + "/apitemplate/src/main"
 	jni_dir = project_dir + "/apitemplate/src/main/jni"
 
-	print("Vectorizing using NEON intrinsics...", end="")
+	print("Vectorizing using NEON intrinsics...\n", end="")
 	kernel_names = []
 	for k in all_kernels:
 		kernel_names += [k[0]]
 		# invoke revised version of vecpy
+		vectorize(k[1], Options(Architecture.neon, DataType.float), main_dir)
 		continue
 	print("Done!\n")
 
 	
 	# Modify Android.mk
 	print("Generate new Android.mk file ...", end="")
-	new_androidmk_file = open(jni_dir+"/Andoirdbk.mk", 'w')
+	new_androidmk_file = open(jni_dir+"/Android.mk", 'w')
 	new_androidmk_file.write("LOCAL_PATH := $(call my-dir)\n")
 	new_androidmk_file.write(androidmk_singlemodule_template % ("vecandroid", "vecandroid.c", "vecandroid-intrinsics.c"))
 	for kernel_name in kernel_names:
@@ -77,7 +72,6 @@ def makeArr(kernelFile, outputDir):
 
 	# Build ARR
 	print("Compiling into AAR (takes a while because of Gradle build) ...", end="")
-	# parent_dir = os.path.abspath(os.path.dirname(__file__))
 	template_dir = project_dir + "/apitemplate"
 	os.chdir(template_dir)
 	with open(os.devnull, "w") as fnull:
@@ -94,29 +88,39 @@ def makeArr(kernelFile, outputDir):
 
 	return
 
-makeArr("/Users/Jason/Documents/S16-project/15418/vecAndroid/utils/kernels_example.py", "/Users/Jason/Documents/S16-project/15418/vecAndroid/utils/")
-
-# script_parent_dir = os.path.abspath(os.path.dirname(__file__))
-# project_dir = script_parent_dir[:script_parent_dir.rfind("/")];
-# jni_dir = project_dir + "/apitemplate/src/main/jni"
-
-# print(androidmk_singlemodule_template % (1,2,3))
-# new_androidmk_file = open(jni_dir+"/Andoirdbk.mk", 'w')
-# new_androidmk_file.write("LOCAL_PATH := $(call my-dir)\n")
-# new_androidmk_file.write(androidmk_singlemodule_template % ("vecandroid", "vecandroid.c", "vecandroid-intrinsics.c"))
-# for kernel_name in kernel_names:
-# 	new_androidmk_file.write(androidmk_singlemodule_template % (kernel_name, "vecpy_" + kernel_name + "_core.cpp", "vecpy_" + kernel_name + "_kernel.c"))
-# new_androidmk_file.write("$(call import-module,cpufeatures)\n")
+def environment_check():
+	return
 
 
+# Get the total number of args passed to the demo.py
+total = len(sys.argv)
+ 
+# Get the arguments list 
+cmdargs = str(sys.argv)
 
-# parent_dir = os.path.abspath(os.path.dirname(__file__))
-# template_dir = parent_dir[:parent_dir.rfind("/")] + "/apitemplate"
-# os.chdir(template_dir)
-# subprocess.call(["gradle","assemble"]) 
+# Print it
+# print ("The total numbers of args passed to the script: %d " % total)
+# print ("Args list: %s " % cmdargs)
 
-# spec = importlib.util.spec_from_file_location("module.name", "/Users/Jason/Documents/S16-project/15418/vecpyt/volume.py")
-# fileAsModule = importlib.util.module_from_spec(spec)
-# spec.loader.exec_module(fileAsModule)
-# all_kernels = inspect.getmembers(fileAsModule, inspect.isfunction)
-# print(all_kernels[0][1])
+if total < 2:
+	print("Not enough arguments. Use '-help' to check usage.")
+
+flag = sys.argv[1]
+
+if flag == "-compile":
+	if total != 4:
+		print("There should be 2 arguments after '-compile'.")
+		exit(0)
+	if not (os.path.isfile(sys.argv[2]) and os.path.isdir(sys.argv[3])):
+		print("Your kernels .py file or output directory is not valid!")
+		exit(0)
+	else:
+		makeArr(sys.argv[2], sys.argv[3])
+		exit(0)
+elif flag == "-help":
+	print("Usage")
+else:
+	print("Invalid flag.")
+
+# Example usage
+# python3 vecAndroidRun.py -compile /Users/Jason/Documents/S16-project/15418/vecAndroid/utils/kernels_example.py /Users/Jason/Documents/S16-project/15418/vecAndroid/utils/

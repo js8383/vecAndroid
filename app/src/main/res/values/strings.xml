@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">VecAndroid</string>
+    <string name="IntroHeading">Enter a length for input array and select a catagory to see the speedup benchmarking.</string>
 </resources>

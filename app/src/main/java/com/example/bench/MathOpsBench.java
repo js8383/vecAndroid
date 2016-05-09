@@ -16,18 +16,19 @@ import com.vecandroid.MathOps;
 import com.vecandroid.VecAndroidApi;
 import com.example.bench.R;
 
-public class VecAndroidBench extends Activity
+public class MathOpsBench extends Activity
 {
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
+        setContentView(R.layout.mathops_activity);
         /* Create a TextView and set its content.
          * the text is retrieved by calling a native
          * function.
          */
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.benchmark);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.mathopsbenchmark);
         TextView tv0 = new TextView(this);
         TextView tv1 = new TextView(this);
         TextView tv2 = new TextView(this);

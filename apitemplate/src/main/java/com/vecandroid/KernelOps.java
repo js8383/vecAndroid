@@ -7,7 +7,7 @@ import java.nio.*;
 
 public class KernelOps implements VecAndroidApi.Kernel {
     //JNI wrappers
-    public static native boolean volume(FloatBuffer radius, FloatBuffer volume);
+    public static native boolean volume2(FloatBuffer radius, FloatBuffer volume);
     private static native ByteBuffer allocate(long N);
     private static native boolean free(Buffer buffer);
     //Helper functions to allocate and free aligned direct buffers
@@ -19,7 +19,7 @@ public class KernelOps implements VecAndroidApi.Kernel {
     }
     
     //Import kernel function library
-    public KernelOps() { System.loadLibrary("volume"); }
+    public KernelOps() { System.loadLibrary("volume2"); }
     
     //Testing section (implementing functions in VecAndroidApi)
     @Override
@@ -33,7 +33,7 @@ public class KernelOps implements VecAndroidApi.Kernel {
         b2.put(b12);
         b1.position(0);
         b2.position(0);
-        volume(b1, b2);
+        volume1(b1, b2);
         return(Float.toString(b2.get(2)));
     }
 }

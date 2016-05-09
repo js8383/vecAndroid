@@ -4,17 +4,29 @@
     package="com.example.bench"
     android:versionCode="1"
     android:versionName="1.0">
-  <application
-      android:allowBackup="true"
-      android:fullBackupContent="false"
-      android:icon="@mipmap/ic_launcher"
-      android:label="example">
-    <activity android:name="com.example.bench.VecAndroidBench"
-              android:label="VecAndroid">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-        <category android:name="android.intent.category.LAUNCHER" />
-      </intent-filter>
-    </activity>
-  </application>
+
+    <application
+        android:allowBackup="true"
+        android:fullBackupContent="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="vecAndroid">
+        <activity
+            android:name=".MathOpsBench"
+            android:label="Math Operations Benchmark"
+            android:parentActivityName="com.example.bench.MainActivity"/>
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".AlgorithmsBench"
+            android:parentActivityName="com.example.bench.MainActivity"/>
+        <activity
+            android:name=".KernelsBench"
+            android:parentActivityName="com.example.bench.MainActivity">
+        </activity>
+    </application>
+
 </manifest>
