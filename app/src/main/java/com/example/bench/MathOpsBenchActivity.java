@@ -99,7 +99,6 @@ public class MathOpsBenchActivity extends Activity
 //        float test11_2[] = new float[]{-1f, -5f, 3f, 2f, 9f};
 //        tv11.setText(Arrays.toString(m.floatGe(test11_1, test11_2)));
 
-
         tv0.setText(MathOpsBenchWrapper.intAbsBenchInfo(size));
         tv1.setText(MathOpsBenchWrapper.floatAbsBenchInfo(size));
         tv2.setText(MathOpsBenchWrapper.intAddBenchInfo(size));

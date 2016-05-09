@@ -20,4 +20,8 @@ public interface VecAndroidApiBench {
 //        public String intLeBench(int size);
 //        public String floatLeBench(int size);
     }
+
+    public interface Kernels {
+
+    }
 }
