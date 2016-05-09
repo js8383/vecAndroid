@@ -480,7 +480,7 @@ class Compiler_Arm:
     def mask(self, *args):
       #(input, output, mask) = args
       #self.mask_1_2(input, output, mask, '_mm_or_ps', '_mm_and_ps', '_mm_andnot_ps') #TODO
-      args = (args[1], args[2], args[0], args[1])
+      args = (args[1], 'vcvtq_u32_f32(%s)'%(args[2]), args[0], args[1])
       self.vector_1_3('vbslq_f32', args)
     #Python arithmetic operators
     def add(self, *args):
