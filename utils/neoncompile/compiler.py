@@ -31,6 +31,9 @@ class Compiler:
   def get_core_file(k):
     return 'neoncompile_%s_core.cpp'%(k.name)
 
+  def get_neonmore_h_file():
+    return 'neon_more.h'
+
   #Generates the core file
   def compile_core(k, options, include_files, path):
     if Architecture.is_generic(options.arch):
@@ -309,13 +312,14 @@ class Compiler:
     ##########################
     # API for java: KernelOps
     ##########################
-    
+
     file_name = 'KernelOps.java'
     javapath = os.path.join(path, 'java/com/vecandroid')
     if not os.path.exists(javapath):
       os.makedirs(javapath)
     fullpath = os.path.join(javapath, file_name)
     arg_str = ', '.join('%s %s'%(uniform_type if arg.is_uniform else buffer_type, arg.name) for arg in args)
+    arg_str_no_type = ', '.join(arg.name for arg in args)
     # Initialize a java file
     if not os.path.isfile(fullpath):
       src = Formatter()
@@ -370,7 +374,7 @@ class Compiler:
     src += '@Override'
     src += 'public boolean map_%s(%s) {'%(k.name, arg_str) # API map function
     src.indent()
-    src += 'return %s(%s);'%(k.name, arg_str) #function name and arguments
+    src += 'return %s(%s);'%(k.name, arg_str_no_type) #function name and arguments
     src.unindent()
     src += '}'
     src.unindent()
@@ -402,7 +406,7 @@ class Compiler:
     ##############################
     # API for java: VecAndroidApi
     ##############################
-    
+
     file_name = 'VecAndroidApi.java'
     javapath = os.path.join(path, 'java/com/vecandroid')
     if not os.path.exists(javapath):
@@ -554,6 +558,43 @@ class Compiler:
       file.write(src.get_code())
     print('Saved to file: %s'%(fullpath))
 
+  #Generate supplement to neon intrinsics
+  def compile_neonmore_h(path):
+    src = Formatter()
+    src.section('Generated supplement to NEON intrinsics:')
+    src += '#include <stdint.h>'
+    src += '#include <arm_neon.h>'
+    src += ''
+    src += 'uint32_t vmovemask_f32(float32x4_t x) {'
+    src.indent()
+    src += 'uint32x4_t a = vandq_u32(vreinterpretq_u32_f32(x), (uint32x4_t) {0x1, 0x2, 0x4, 0x8});'
+    src += 'uint32x4_t b = vextq_u32(a, a, 2);'
+    src += 'uint32x4_t c = vorrq_u32(a, b);'
+    src += 'uint32x4_t d = vextq_u32(c, c, 3);'
+    src += 'uint32x4_t e = vorrq_u32(c, d);'
+    src += 'return vgetq_lane_u32(e, 0);'
+    src.unindent()
+    src += '}'
+    src += ''
+    src += 'uint32_t vmovemask_u32(uint32x4_t x) {'
+    src.indent()
+    src += 'uint32x4_t a = vandq_u32(x, (uint32x4_t) {0x1, 0x2, 0x4, 0x8});'
+    src += 'uint32x4_t b = vextq_u32(a, a, 2);'
+    src += 'uint32x4_t c = vorrq_u32(a, b);'
+    src += 'uint32x4_t d = vextq_u32(c, c, 3);'
+    src += 'uint32x4_t e = vorrq_u32(c, d);'
+    src += 'return vgetq_lane_u32(e, 0);'
+    src.unindent()
+    src += '}'
+    #Save code to file
+    file_name = Compiler.get_neonmore_h_file()
+    jnipath = os.path.join(path, 'jni')
+    if not os.path.exists(jnipath):
+      os.makedirs(jnipath)
+    fullpath = os.path.join(jnipath, file_name)
+    with open(fullpath, 'w') as file:
+      file.write(src.get_code())
+    print('Saved to file: %s'%(fullpath))
 
   #Generates the kernel
   def compile_kernel(k, options, path):
@@ -595,6 +636,8 @@ class Compiler:
         options.threads = 1
     #Show options
     options.show(path)
+    #Generate neon supplement
+    Compiler.compile_neonmore_h(path)
     #Generate the kernel
     Compiler.compile_kernel_h(kernel, options, path)
     Compiler.compile_kernel(kernel, options, path)
@@ -608,4 +651,3 @@ class Compiler:
       build_flags.append('-I$JAVA_HOME/include/linux/')
     #Generate the core
     Compiler.compile_core(kernel, options, include_files, path)
-
