@@ -58,7 +58,7 @@ def makeArr(kernelFile, outputDir):
 		os.remove(filename1)
 	if os.path.exists(filename2):
 		os.remove(filename2)
-		
+
 	kernel_names = []
 	for k in all_kernels:
 		kernel_names += [k[0]]
@@ -74,7 +74,7 @@ def makeArr(kernelFile, outputDir):
 	new_androidmk_file.write("LOCAL_PATH := $(call my-dir)\n")
 	new_androidmk_file.write(androidmk_singlemodule_template % ("vecandroid", "vecandroid.c", "vecandroid-intrinsics.c"))
 	for kernel_name in kernel_names:
-		new_androidmk_file.write(androidmk_singlemodule_template % (kernel_name, "vecandroid_" + kernel_name + "_core.cpp", "vecandroid_" + kernel_name + "_kernel.c"))
+		new_androidmk_file.write(androidmk_singlemodule_template % (kernel_name, "neoncompile_" + kernel_name + "_core.cpp", "neoncompile_" + kernel_name + "_kernel.c"))
 	new_androidmk_file.write("$(call import-module,cpufeatures)\n")
 	print("Done!\n")
 
