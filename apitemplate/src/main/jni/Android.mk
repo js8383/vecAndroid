@@ -22,15 +22,15 @@ include $(BUILD_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := volume1
-LOCAL_SRC_FILES := vecandroid_volume1_core.cpp
+LOCAL_MODULE := saxpy
+LOCAL_SRC_FILES := neoncompile_saxpy_core.cpp
 
 ifeq ($(TARGET_ARCH_ABI),$(filter $(TARGET_ARCH_ABI), armeabi-v7a x86))
     LOCAL_CFLAGS := -DHAVE_NEON=1
 ifeq ($(TARGET_ARCH_ABI),x86)
     LOCAL_CFLAGS += -mssse3
 endif
-    LOCAL_SRC_FILES += vecandroid_volume1_kernel.c.neon
+    LOCAL_SRC_FILES += neoncompile_saxpy_kernel.c.neon
 endif
 
 LOCAL_STATIC_LIBRARIES := cpufeatures
@@ -42,15 +42,15 @@ include $(BUILD_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := volume2
-LOCAL_SRC_FILES := vecandroid_volume2_core.cpp
+LOCAL_MODULE := volume
+LOCAL_SRC_FILES := neoncompile_volume_core.cpp
 
 ifeq ($(TARGET_ARCH_ABI),$(filter $(TARGET_ARCH_ABI), armeabi-v7a x86))
     LOCAL_CFLAGS := -DHAVE_NEON=1
 ifeq ($(TARGET_ARCH_ABI),x86)
     LOCAL_CFLAGS += -mssse3
 endif
-    LOCAL_SRC_FILES += vecandroid_volume2_kernel.c.neon
+    LOCAL_SRC_FILES += neoncompile_volume_kernel.c.neon
 endif
 
 LOCAL_STATIC_LIBRARIES := cpufeatures
