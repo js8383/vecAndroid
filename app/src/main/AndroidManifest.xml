@@ -11,7 +11,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="vecAndroid">
         <activity
-            android:name=".MathOpsBench"
+            android:name=".MathOpsBenchActivity"
             android:label="Math Operations Benchmark"
             android:parentActivityName="com.example.bench.MainActivity"/>
         <activity android:name=".MainActivity">
@@ -21,10 +21,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AlgorithmsBench"
+            android:name=".AlgorithmsBenchActivity"
             android:parentActivityName="com.example.bench.MainActivity"/>
         <activity
-            android:name=".KernelsBench"
+            android:name=".KernelsBenchActivity"
             android:parentActivityName="com.example.bench.MainActivity">
         </activity>
     </application>

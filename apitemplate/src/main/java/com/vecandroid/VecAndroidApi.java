@@ -2,8 +2,6 @@ package com.vecandroid;
 
 import java.util.List;
 
-import java.util.List;
-
 /**
  * Created by Jason on 5/5/16.
  */

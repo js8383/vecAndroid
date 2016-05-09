@@ -8,7 +8,7 @@ import java.util.List;
 public class MathOps implements VecAndroidApi.MathOp {
 
 //    public native String testings();
-//    public native String intAbsBench();
+//    private native String intAbsBench();
 //    public native String floatAbsBench();
 //    public native String intAddBench();
 //    public native String floatAddBench();

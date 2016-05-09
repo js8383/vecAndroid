@@ -161,7 +161,7 @@ unary_logger ( jstring * result, JNIEnv* env, jobject thiz,
             strlcat(buffer, "] \n", sizeof buffer);
 
         } else {
-            strlcat(buffer, "Test passed!\n", sizeof buffer);
+            // strlcat(buffer, "Test passed!\n", sizeof buffer);
         }
     }
 #else /* !HAVE_NEON */
@@ -539,33 +539,7 @@ floatAbsSerial(float *output, float *input, int N)
     }
 }
 
-/* this is the absolute value function for integers */
-jstring
-Java_com_vecandroid_api_MathOps_intAbsBench( JNIEnv* env,
-                                               jobject thiz )
-{
-    jstring result;
-    char *str;
-    asprintf(&str, "Absolute value (integers)");
-    int length = 1027;
-    int output[length];
-    int output_expected[length];
-    int input[length];
-
-    int i;
-    srand(time(NULL));
-    for (i = 0; i < length; i++) {
-        input[i] = (int) (-50 + (rand() % 100));
-        output[i] = (int) 0;
-    }
-    int array_type = 0; // int
-    unary_logger(&result, env, thiz, str, &intAbsSerial, &intAbsVector, output, input, output_expected, length, array_type);
-    // loggerTest(&result, env, thiz, 2, 3);
-    // free(str);
-    return result;
-}
-
-/* ------------------------------------- New API ----------------------------------------- */
+/* ------------------------------------- Function API ----------------------------------------- */
 
 /* this is the absolute value function for integers */
 jintArray
@@ -771,17 +745,46 @@ Java_com_vecandroid_MathOps_floatGeNative( JNIEnv* env,
     return result;
 }
 
-/* ------------------------------------- End ----------------------------------------- */
+
+/* ------------------------------------- Bench API ----------------------------------------- */
+
+/***************** Simple ******************/
+
+/* this is the absolute value bench function for integers */
+jstring
+Java_com_vecandroid_MathOpsBench_intAbsBenchNative( JNIEnv* env,
+                                               jobject thiz, jint l)
+{
+    jstring result;
+    char *str;
+    asprintf(&str, "Absolute value (integers)");
+    int length = l;
+    int output[length];
+    int output_expected[length];
+    int input[length];
+
+    int i;
+    srand(time(NULL));
+    for (i = 0; i < length; i++) {
+        input[i] = (int) (-50 + (rand() % 100));
+        output[i] = (int) 0;
+    }
+    int array_type = 0; // int
+    unary_logger(&result, env, thiz, str, &intAbsSerial, &intAbsVector, output, input, output_expected, length, array_type);
+    // loggerTest(&result, env, thiz, 2, 3);
+    // free(str);
+    return result;
+}
 
 /* this is the absolute value function for floating points */
 jstring
-Java_com_example_vecandroid_VecAndroid_floatAbsBench( JNIEnv* env,
-                                               jobject thiz )
+Java_com_vecandroid_MathOpsBench_floatAbsBenchNative( JNIEnv* env,
+                                               jobject thiz, jint l)
 {
     jstring result;
     char *str;
     asprintf(&str, "Absolute value (floating points)");
-    int length = 7;
+    int length = l;
     float output[length];
     float output_expected[length];
     float input[length];
@@ -800,17 +803,6 @@ Java_com_example_vecandroid_VecAndroid_floatAbsBench( JNIEnv* env,
     return result;
 }
 
-
-/***********************
- *  END OF SIMPLE TESTS *
- ***********************/
-
-/***********************************************/
-
-/****************************************
- *  START OF API (benchmarking section) *
- ****************************************/
-
 /***************** Arithmetic ******************/
 
 /* this is the entry-wise add implementation in C for integers */
@@ -825,13 +817,13 @@ intAddSerial(int *output, int *input1, int *input2, int N)
 
 /* this is the entry-wise add operation for integers */
 jstring
-Java_com_example_vecandroid_VecAndroid_intAddBench( JNIEnv* env,
-                                               jobject thiz )
+Java_com_vecandroid_MathOpsBench_intAddBenchNative( JNIEnv* env,
+                                               jobject thiz, jint l)
 {
     jstring result;
     char *str;
     asprintf(&str, "Entry-wise add (integers)");
-    int length = 1027;
+    int length = l;
     int output[length];
     int output_expected[length];
     int input1[length];
@@ -869,13 +861,13 @@ floatAddSerial(float *output, float *input1, float *input2, int N)
 
 /* this is the entry-wise add operation for floating points */
 jstring
-Java_com_example_vecandroid_VecAndroid_floatAddBench( JNIEnv* env,
-                                               jobject thiz )
+Java_com_vecandroid_MathOpsBench_floatAddBenchNative( JNIEnv* env,
+                                               jobject thiz, jint l)
 {
     jstring result;
     char *str;
     asprintf(&str, "Entry-wise add (floating points)");
-    int length = 1027;
+    int length = l;
     float output[length];
     float output_expected[length];
     float input1[length];
@@ -911,13 +903,13 @@ intSubSerial(int *output, int *input1, int *input2, int N)
 
 /* this is the entry-wise subtract operation for integers */
 jstring
-Java_com_example_vecandroid_VecAndroid_intSubBench( JNIEnv* env,
-                                               jobject thiz )
+Java_com_vecandroid_MathOpsBench_intSubBenchNative( JNIEnv* env,
+                                               jobject thiz, jint l)
 {
     jstring result;
     char *str;
     asprintf(&str, "Entry-wise subtract (integers)");
-    int length = 1027;
+    int length = l;
     int output[length];
     int output_expected[length];
     int input1[length];
@@ -955,13 +947,13 @@ floatSubSerial(float *output, float *input1, float *input2, int N)
 
 /* this is the entry-wise subtract operation for floating points */
 jstring
-Java_com_example_vecandroid_VecAndroid_floatSubBench( JNIEnv* env,
-                                               jobject thiz )
+Java_com_vecandroid_MathOpsBench_floatSubBenchNative( JNIEnv* env,
+                                               jobject thiz, jint l )
 {
     jstring result;
     char *str;
     asprintf(&str, "Entry-wise subtract (floating points)");
-    int length = 1027;
+    int length = l;
     float output[length];
     float output_expected[length];
     float input1[length];
@@ -997,13 +989,13 @@ intMulSerial(int *output, int *input1, int *input2, int N)
 
 /* this is the entry-wise multiply operation for integers */
 jstring
-Java_com_example_vecandroid_VecAndroid_intMulBench( JNIEnv* env,
-                                               jobject thiz )
+Java_com_vecandroid_MathOpsBench_intMulBenchNative( JNIEnv* env,
+                                               jobject thiz, jint l)
 {
     jstring result;
     char *str;
     asprintf(&str, "Entry-wise multiply (integers)");
-    int length = 1027;
+    int length = l;
     int output[length];
     int output_expected[length];
     int input1[length];
@@ -1041,13 +1033,13 @@ floatMulSerial(float *output, float *input1, float *input2, int N)
 
 /* this is the entry-wise multiply operation for floating points */
 jstring
-Java_com_example_vecandroid_VecAndroid_floatMulBench( JNIEnv* env,
-                                               jobject thiz )
+Java_com_vecandroid_MathOpsBench_floatMulBenchNative( JNIEnv* env,
+                                               jobject thiz, jint l)
 {
     jstring result;
     char *str;
     asprintf(&str, "Entry-wise multiply (floating points)");
-    int length = 1027;
+    int length = l;
     float output[length];
     float output_expected[length];
     float input1[length];
@@ -1087,13 +1079,13 @@ intEqSerial(uint32_t *output, int *input1, int *input2, int N)
 
 /* this is the entry-wise comparison (equal) operation for integers */
 jstring
-Java_com_example_vecandroid_VecAndroid_intEqBench( JNIEnv* env,
-                                               jobject thiz )
+Java_com_vecandroid_MathOpsBench_intEqBenchNative( JNIEnv* env,
+                                               jobject thiz, jint l)
 {
     jstring result;
     char *str;
     asprintf(&str, "Entry-wise comparison (equal) on integers");
-    int length = 1027;
+    int length = l;
     uint32_t output[length];
     uint32_t output_expected[length];
     int input1[length];
@@ -1131,13 +1123,13 @@ floatEqSerial(uint32_t *output, float *input1, float *input2, int N)
 
 /* this is the entry-wise comparison (equal) operation for floating points */
 jstring
-Java_com_example_vecandroid_VecAndroid_floatEqBench( JNIEnv* env,
-                                               jobject thiz )
+Java_com_vecandroid_MathOpsBench_floatEqBenchNative( JNIEnv* env,
+                                               jobject thiz, jint l)
 {
     jstring result;
     char *str;
     asprintf(&str, "Entry-wise comparison (equal) on floating points");
-    int length = 1024; // power of 4
+    int length = l; // power of 4
     uint32_t output[length];
     uint32_t output_expected[length];
     float input1[length];
@@ -1174,13 +1166,13 @@ intGeSerial(uint32_t *output, int *input1, int *input2, int N)
 
 /* this is the entry-wise comparison (greater than or equal to) operation for integers */
 jstring
-Java_com_example_vecandroid_VecAndroid_intGeBench( JNIEnv* env,
-                                               jobject thiz )
+Java_com_vecandroid_MathOpsBench_intGeBenchNative( JNIEnv* env,
+                                               jobject thiz, jint l)
 {
     jstring result;
     char *str;
     asprintf(&str, "Entry-wise comparison (greater than or equal to) on integers");
-    int length = 1024; // power of 4
+    int length = l; // power of 4
     uint32_t output[length];
     uint32_t output_expected[length];
     int input1[length];
@@ -1218,8 +1210,8 @@ floatGeSerial(uint32_t *output, float *input1, float *input2, int N)
 
 /* this is the entry-wise comparison (greater than or equal to) operation for floating points */
 jstring
-Java_com_example_vecandroid_VecAndroid_floatGeBench( JNIEnv* env,
-                                               jobject thiz )
+Java_com_vecandroid_MathOpsBench_floatGeBenchNative( JNIEnv* env,
+                                               jobject thiz, jint l)
 {
     jstring result;
     char *str;
