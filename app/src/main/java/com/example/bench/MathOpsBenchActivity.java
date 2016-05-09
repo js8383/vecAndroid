@@ -47,6 +47,11 @@ public class MathOpsBenchActivity extends Activity
         TextView tv10 = new TextView(this);
         TextView tv11 = new TextView(this);
         TextView tv12 = new TextView(this);
+        TextView tv13 = new TextView(this);
+        TextView tv14 = new TextView(this);
+        TextView tv15 = new TextView(this);
+        TextView tv16 = new TextView(this);
+        TextView tv17 = new TextView(this);
 
 
         VecAndroidApi.MathOp m = new MathOps();
@@ -109,6 +114,12 @@ public class MathOpsBenchActivity extends Activity
         tv9.setText(MathOpsBenchWrapper.floatEqBenchInfo(size));
         tv10.setText(MathOpsBenchWrapper.intGeBenchInfo(size));
         tv11.setText(MathOpsBenchWrapper.floatGeBenchInfo(size));
+        tv12.setText(MathOpsBenchWrapper.intLeBenchInfo(size));
+        tv13.setText(MathOpsBenchWrapper.floatLeBenchInfo(size));
+        tv14.setText(MathOpsBenchWrapper.intGtBenchInfo(size));
+        tv15.setText(MathOpsBenchWrapper.floatGtBenchInfo(size));
+        tv16.setText(MathOpsBenchWrapper.intLtBenchInfo(size));
+        tv17.setText(MathOpsBenchWrapper.floatLtBenchInfo(size));
         linearLayout.addView(tv0);
         linearLayout.addView(tv1);
         linearLayout.addView(tv2);
@@ -122,7 +133,11 @@ public class MathOpsBenchActivity extends Activity
         linearLayout.addView(tv10);
         linearLayout.addView(tv11);
         linearLayout.addView(tv12);
-
+        linearLayout.addView(tv13);
+        linearLayout.addView(tv14);
+        linearLayout.addView(tv15);
+        linearLayout.addView(tv16);
+        linearLayout.addView(tv17);
 
     }
 }

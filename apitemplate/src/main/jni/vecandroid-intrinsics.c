@@ -33,7 +33,6 @@ testingVector(int *output, int *input, int N)
 
 
 /* Absolute value implementation (integers) in NEON intrinsics
- * Requires N to be a power of 4.
  */
 void
 intAbsVector(int *output, int *input, int N)
@@ -58,7 +57,6 @@ intAbsVector(int *output, int *input, int N)
 }
 
 /* Absolute value implementation (floating points) in NEON intrinsics
- * Requires N to be a power of 4.
  */
 void
 floatAbsVector(float *output, float *input, int N)
@@ -82,7 +80,6 @@ floatAbsVector(float *output, float *input, int N)
 }
 
 /* Add implementation (integers) in NEON intrinsics
- * Requires N to be a power of 4.
  */
 void
 intAddVector(int *output, int *input1, int *input2, int N)
@@ -107,7 +104,6 @@ intAddVector(int *output, int *input1, int *input2, int N)
 }
 
 /* Add implementation (floating points) in NEON intrinsics
- * Requires N to be a power of 4.
  */
 void
 floatAddVector(float *output, float *input1, float *input2, int N)
@@ -132,7 +128,6 @@ floatAddVector(float *output, float *input1, float *input2, int N)
 }
 
 /* Subtract implementation (integers) in NEON intrinsics
- * Requires N to be a power of 4.
  */
 void
 intSubVector(int *output, int *input1, int *input2, int N)
@@ -157,7 +152,6 @@ intSubVector(int *output, int *input1, int *input2, int N)
 }
 
 /* Subtract implementation (floating points) in NEON intrinsics
- * Requires N to be a power of 4.
  */
 void
 floatSubVector(float *output, float *input1, float *input2, int N)
@@ -182,7 +176,6 @@ floatSubVector(float *output, float *input1, float *input2, int N)
 }
 
 /* Multiply implementation (integers) in NEON intrinsics
- * Requires N to be a power of 4.
  */
 void
 intMulVector(int *output, int *input1, int *input2, int N)
@@ -207,7 +200,6 @@ intMulVector(int *output, int *input1, int *input2, int N)
 }
 
 /* Multiply implementation (floating points) in NEON intrinsics
- * Requires N to be a power of 4.
  */
 void
 floatMulVector(float *output, float *input1, float *input2, int N)
@@ -232,7 +224,6 @@ floatMulVector(float *output, float *input1, float *input2, int N)
 }
 
 /* Comparison (equality) implementation (integers) in NEON intrinsics
- * Requires N to be a power of 4.
  */
 void
 intEqVector(uint32_t *output, int *input1, int *input2, int N)
@@ -257,7 +248,6 @@ intEqVector(uint32_t *output, int *input1, int *input2, int N)
 }
 
 /* Comparison (equality) implementation (floating points) in NEON intrinsics
- * Requires N to be a power of 4.
  */
 void
 floatEqVector(uint32_t *output, float *input1, float *input2, int N)
@@ -282,7 +272,6 @@ floatEqVector(uint32_t *output, float *input1, float *input2, int N)
 }
 
 /* Comparison (greater than or equal to) implementation (integers) in NEON intrinsics
- * Requires N to be a power of 4.
  */
 void
 intGeVector(uint32_t *output, int *input1, int *input2, int N)
@@ -307,7 +296,6 @@ intGeVector(uint32_t *output, int *input1, int *input2, int N)
 }
 
 /* Comparison (greater than or equal to) implementation (floating points) in NEON intrinsics
- * Requires N to be a power of 4.
  */
 void
 floatGeVector(uint32_t *output, float *input1, float *input2, int N)
@@ -328,5 +316,151 @@ floatGeVector(uint32_t *output, float *input1, float *input2, int N)
     }
     for (i = n; i < N; i++) {
         output[i] = (input1[i] >= input2[i]) ? 1 : 0;
+    }
+}
+
+
+/* Comparison (less than or equal to) implementation (integers) in NEON intrinsics
+ */
+void
+intLeVector(uint32_t *output, int *input1, int *input2, int N)
+{
+    int vector_width = 4;
+    int i;
+    uint32x4_t eq_vec;
+    int n = N - (N % 4);
+    for (i = 0; i < n; i += vector_width){
+        int32x4_t input1_vec = vld1q_s32(input1 + i);
+        int32x4_t input2_vec = vld1q_s32(input2 + i);
+        eq_vec = vcleq_s32(input1_vec, input2_vec);
+        vst1q_u32(output + i, eq_vec);
+    }
+    if (N % 4 >= 2) {
+        vst1_u32(output + n, vcle_s32(vld1_s32(input1 + n), vld1_s32(input2 + n)));
+        n += 2;
+    }
+    for (i = n; i < N; i++) {
+        output[i] = (input1[i] <= input2[i]) ? 1 : 0;
+    }
+}
+
+/* Comparison (less than or equal to) implementation (floating points) in NEON intrinsics
+ */
+void
+floatLeVector(uint32_t *output, float *input1, float *input2, int N)
+{
+    int vector_width = 4;
+    int i;
+    uint32x4_t eq_vec;
+    int n = N - (N % 4);
+    for (i = 0; i < n; i += vector_width){
+        float32x4_t input1_vec = vld1q_f32(input1 + i);
+        float32x4_t input2_vec = vld1q_f32(input2 + i);
+        eq_vec = vcleq_f32(input1_vec, input2_vec);
+        vst1q_u32(output + i, eq_vec);
+    }
+    if (N % 4 >= 2) {
+        vst1_u32(output + n, vcle_f32(vld1_f32(input1 + n), vld1_f32(input2 + n)));
+        n += 2;
+    }
+    for (i = n; i < N; i++) {
+        output[i] = (input1[i] <= input2[i]) ? 1 : 0;
+    }
+}
+
+/* Comparison (greater than) implementation (integers) in NEON intrinsics
+ */
+void
+intGtVector(uint32_t *output, int *input1, int *input2, int N)
+{
+    int vector_width = 4;
+    int i;
+    uint32x4_t eq_vec;
+    int n = N - (N % 4);
+    for (i = 0; i < n; i += vector_width){
+        int32x4_t input1_vec = vld1q_s32(input1 + i);
+        int32x4_t input2_vec = vld1q_s32(input2 + i);
+        eq_vec = vcgtq_s32(input1_vec, input2_vec);
+        vst1q_u32(output + i, eq_vec);
+    }
+    if (N % 4 >= 2) {
+        vst1_u32(output + n, vcgt_s32(vld1_s32(input1 + n), vld1_s32(input2 + n)));
+        n += 2;
+    }
+    for (i = n; i < N; i++) {
+        output[i] = (input1[i] > input2[i]) ? 1 : 0;
+    }
+}
+
+/* Comparison (greater than) implementation (floating points) in NEON intrinsics
+ */
+void
+floatGtVector(uint32_t *output, float *input1, float *input2, int N)
+{
+    int vector_width = 4;
+    int i;
+    uint32x4_t eq_vec;
+    int n = N - (N % 4);
+    for (i = 0; i < n; i += vector_width){
+        float32x4_t input1_vec = vld1q_f32(input1 + i);
+        float32x4_t input2_vec = vld1q_f32(input2 + i);
+        eq_vec = vcgtq_f32(input1_vec, input2_vec);
+        vst1q_u32(output + i, eq_vec);
+    }
+    if (N % 4 >= 2) {
+        vst1_u32(output + n, vcgt_f32(vld1_f32(input1 + n), vld1_f32(input2 + n)));
+        n += 2;
+    }
+    for (i = n; i < N; i++) {
+        output[i] = (input1[i] > input2[i]) ? 1 : 0;
+    }
+}
+
+
+/* Comparison (less than) implementation (integers) in NEON intrinsics
+ */
+void
+intLtVector(uint32_t *output, int *input1, int *input2, int N)
+{
+    int vector_width = 4;
+    int i;
+    uint32x4_t eq_vec;
+    int n = N - (N % 4);
+    for (i = 0; i < n; i += vector_width){
+        int32x4_t input1_vec = vld1q_s32(input1 + i);
+        int32x4_t input2_vec = vld1q_s32(input2 + i);
+        eq_vec = vcltq_s32(input1_vec, input2_vec);
+        vst1q_u32(output + i, eq_vec);
+    }
+    if (N % 4 >= 2) {
+        vst1_u32(output + n, vclt_s32(vld1_s32(input1 + n), vld1_s32(input2 + n)));
+        n += 2;
+    }
+    for (i = n; i < N; i++) {
+        output[i] = (input1[i] < input2[i]) ? 1 : 0;
+    }
+}
+
+/* Comparison (less than) implementation (floating points) in NEON intrinsics
+ */
+void
+floatLtVector(uint32_t *output, float *input1, float *input2, int N)
+{
+    int vector_width = 4;
+    int i;
+    uint32x4_t eq_vec;
+    int n = N - (N % 4);
+    for (i = 0; i < n; i += vector_width){
+        float32x4_t input1_vec = vld1q_f32(input1 + i);
+        float32x4_t input2_vec = vld1q_f32(input2 + i);
+        eq_vec = vcltq_f32(input1_vec, input2_vec);
+        vst1q_u32(output + i, eq_vec);
+    }
+    if (N % 4 >= 2) {
+        vst1_u32(output + n, vclt_f32(vld1_f32(input1 + n), vld1_f32(input2 + n)));
+        n += 2;
+    }
+    for (i = n; i < N; i++) {
+        output[i] = (input1[i] < input2[i]) ? 1 : 0;
     }
 }

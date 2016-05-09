@@ -33,6 +33,12 @@ public class MathOps implements VecAndroidApi.MathOp {
     private native int[] floatEqNative(float[] a, float[] b);
     private native int[] intGeNative(int[] a, int[] b);
     private native int[] floatGeNative(float[] a, float[] b);
+    private native int[] intLeNative(int[] a, int[] b);
+    private native int[] floatLeNative(float[] a, float[] b);
+    private native int[] intGtNative(int[] a, int[] b);
+    private native int[] floatGtNative(float[] a, float[] b);
+    private native int[] intLtNative(int[] a, int[] b);
+    private native int[] floatLtNative(float[] a, float[] b);
 
     public MathOps() {
         System.loadLibrary("vecandroid");
@@ -161,7 +167,7 @@ public class MathOps implements VecAndroidApi.MathOp {
 
     @Override
     public int[] intLe(int[] a, int[] b) {
-        return null;
+        return intLeNative(a, b);
     }
 
     @Override
@@ -171,11 +177,51 @@ public class MathOps implements VecAndroidApi.MathOp {
 
     @Override
     public int[] floatLe(float[] a, float[] b) {
-        return null;
+        return floatLeNative(a, b);
     }
 
     @Override
     public List<Integer> floatLe(List<Float> a, List<Float> b) {
+        return null;
+    }
+
+    @Override
+    public int[] intGt(int[] a, int[] b) {
+        return intGtNative(a, b);
+    }
+
+    @Override
+    public List<Integer> intGt(List<Integer> a, List<Integer> b) {
+        return null;
+    }
+
+    @Override
+    public int[] floatGt(float[] a, float[] b) {
+        return floatGtNative(a, b);
+    }
+
+    @Override
+    public List<Integer> floatGt(List<Float> a, List<Float> b) {
+        return null;
+    }
+
+    @Override
+    public int[] intLt(int[] a, int[] b) {
+        return intLtNative(a, b);
+    }
+
+    @Override
+    public List<Integer> intLt(List<Integer> a, List<Integer> b) {
+        return null;
+    }
+
+    @Override
+    public int[] floatLt(float[] a, float[] b) {
+        return floatLtNative(a, b);
+    }
+
+    @Override
+    public List<Integer> floatLt(List<Float> a, List<Float> b) {
         return null;
     }
 }

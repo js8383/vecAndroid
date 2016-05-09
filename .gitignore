@@ -40,6 +40,7 @@ Thumbs.db
 # built native files (uncomment if you build your own)
 *.o
 *.so
+*.o.d
 
 # vecandroid compiler cache files
 __pycache__/
