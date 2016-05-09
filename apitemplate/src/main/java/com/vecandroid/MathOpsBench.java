@@ -17,9 +17,12 @@ public class MathOpsBench implements VecAndroidApiBench.MathOps {
     private native String floatEqBenchNative(int size);
     private native String intGeBenchNative(int size);
     private native String floatGeBenchNative(int size);
-//    private native String intLeBenchNative(int size);
-//    private native String floatLeBenchNative(int size);
-
+    private native String intLeBenchNative(int size);
+    private native String floatLeBenchNative(int size);
+    private native String intGtBenchNative(int size);
+    private native String floatGtBenchNative(int size);
+    private native String intLtBenchNative(int size);
+    private native String floatLtBenchNative(int size);
     @Override
     public String intAbsBench(int size) {
         return intAbsBenchNative(size);
@@ -79,4 +82,35 @@ public class MathOpsBench implements VecAndroidApiBench.MathOps {
     public String floatGeBench(int size) {
         return floatGeBenchNative(size);
     }
+
+    @Override
+    public String intLeBench(int size) {
+        return intLeBenchNative(size);
+    }
+
+    @Override
+    public String floatLeBench(int size) {
+        return floatLeBenchNative(size);
+    }
+
+    @Override
+    public String intGtBench(int size) {
+        return intGtBenchNative(size);
+    }
+
+    @Override
+    public String floatGtBench(int size) {
+        return floatGtBenchNative(size);
+    }
+
+    @Override
+    public String intLtBench(int size) {
+        return intLtBenchNative(size);
+    }
+
+    @Override
+    public String floatLtBench(int size) {
+        return floatLtBenchNative(size);
+    }
+
 }

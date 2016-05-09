@@ -17,9 +17,12 @@ public interface VecAndroidApiBench {
         public String floatEqBench(int size);
         public String intGeBench(int size);
         public String floatGeBench(int size);
-//        public String intLeBench(int size);
-//        public String floatLeBench(int size);
-    }
+        public String intLeBench(int size);
+        public String floatLeBench(int size);
+        public String intGtBench(int size);
+        public String floatGtBench(int size);
+        public String intLtBench(int size);
+        public String floatLtBench(int size);    }
 
     public interface Kernels {
 

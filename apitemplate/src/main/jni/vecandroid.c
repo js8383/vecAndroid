@@ -745,6 +745,108 @@ Java_com_vecandroid_MathOps_floatGeNative( JNIEnv* env,
     return result;
 }
 
+jintArray
+Java_com_vecandroid_MathOps_intLeNative( JNIEnv* env,
+                                               jobject thiz, jintArray input1, jintArray input2)
+{
+    jsize length = (*env)->GetArrayLength(env, input1);
+    jint *input3 = (*env)->GetIntArrayElements(env, input1, 0);
+    jint *input4 = (*env)->GetIntArrayElements(env, input2, 0);
+
+    jintArray result = (*env)->NewIntArray(env, length);
+    jint output[length];
+
+    intLeVector(output, input3, input4, length);
+
+    (*env)->SetIntArrayRegion(env, result, 0, length, output);
+    return result;
+}
+
+jintArray
+Java_com_vecandroid_MathOps_floatLeNative( JNIEnv* env,
+                                               jobject thiz, jfloatArray input1, jfloatArray input2)
+{
+    jsize length = (*env)->GetArrayLength(env, input1);
+    jfloat *input3 = (*env)->GetFloatArrayElements(env, input1, 0);
+    jfloat *input4 = (*env)->GetFloatArrayElements(env, input2, 0);
+
+    jintArray result = (*env)->NewIntArray(env, length);
+    jint output[length];
+
+    floatLeVector(output, input3, input4, length);
+
+    (*env)->SetIntArrayRegion(env, result, 0, length, output);
+    return result;
+}
+
+jintArray
+Java_com_vecandroid_MathOps_intGtNative( JNIEnv* env,
+                                               jobject thiz, jintArray input1, jintArray input2)
+{
+    jsize length = (*env)->GetArrayLength(env, input1);
+    jint *input3 = (*env)->GetIntArrayElements(env, input1, 0);
+    jint *input4 = (*env)->GetIntArrayElements(env, input2, 0);
+
+    jintArray result = (*env)->NewIntArray(env, length);
+    jint output[length];
+
+    intGtVector(output, input3, input4, length);
+
+    (*env)->SetIntArrayRegion(env, result, 0, length, output);
+    return result;
+}
+
+jintArray
+Java_com_vecandroid_MathOps_floatGtNative( JNIEnv* env,
+                                               jobject thiz, jfloatArray input1, jfloatArray input2)
+{
+    jsize length = (*env)->GetArrayLength(env, input1);
+    jfloat *input3 = (*env)->GetFloatArrayElements(env, input1, 0);
+    jfloat *input4 = (*env)->GetFloatArrayElements(env, input2, 0);
+
+    jintArray result = (*env)->NewIntArray(env, length);
+    jint output[length];
+
+    floatGtVector(output, input3, input4, length);
+
+    (*env)->SetIntArrayRegion(env, result, 0, length, output);
+    return result;
+}
+
+jintArray
+Java_com_vecandroid_MathOps_intLtNative( JNIEnv* env,
+                                               jobject thiz, jintArray input1, jintArray input2)
+{
+    jsize length = (*env)->GetArrayLength(env, input1);
+    jint *input3 = (*env)->GetIntArrayElements(env, input1, 0);
+    jint *input4 = (*env)->GetIntArrayElements(env, input2, 0);
+
+    jintArray result = (*env)->NewIntArray(env, length);
+    jint output[length];
+
+    intLtVector(output, input3, input4, length);
+
+    (*env)->SetIntArrayRegion(env, result, 0, length, output);
+    return result;
+}
+
+jintArray
+Java_com_vecandroid_MathOps_floatLtNative( JNIEnv* env,
+                                               jobject thiz, jfloatArray input1, jfloatArray input2)
+{
+    jsize length = (*env)->GetArrayLength(env, input1);
+    jfloat *input3 = (*env)->GetFloatArrayElements(env, input1, 0);
+    jfloat *input4 = (*env)->GetFloatArrayElements(env, input2, 0);
+
+    jintArray result = (*env)->NewIntArray(env, length);
+    jint output[length];
+
+    floatLtVector(output, input3, input4, length);
+
+    (*env)->SetIntArrayRegion(env, result, 0, length, output);
+    return result;
+}
+
 
 /* ------------------------------------- Bench API ----------------------------------------- */
 
@@ -926,7 +1028,7 @@ Java_com_vecandroid_MathOpsBench_intSubBenchNative( JNIEnv* env,
     int array_o_type = 0; // int
     int array_i1_type = 0; // int
     int array_i2_type = 0; // int
-    binary_logger (&result, env, thiz, str, &intAddSerial, &intAddVector,
+    binary_logger (&result, env, thiz, str, &intSubSerial, &intSubVector,
                    output, input1, input2, output_expected, length,
                    array_o_type, array_i1_type, array_i2_type);
     // loggerTest(&result, env, thiz, 2, 3);
@@ -969,7 +1071,7 @@ Java_com_vecandroid_MathOpsBench_floatSubBenchNative( JNIEnv* env,
     int array_o_type = 1; // float
     int array_i1_type = 1; // float
     int array_i2_type = 1; // float
-    binary_logger (&result, env, thiz, str, &floatAddSerial, &floatAddVector,
+    binary_logger (&result, env, thiz, str, &floatSubSerial, &floatSubVector,
                    output, input1, input2, output_expected, length,
                    array_o_type, array_i1_type, array_i2_type);
     // loggerTest(&result, env, thiz, 2, 3);
@@ -1012,7 +1114,7 @@ Java_com_vecandroid_MathOpsBench_intMulBenchNative( JNIEnv* env,
     int array_o_type = 0; // int
     int array_i1_type = 0; // int
     int array_i2_type = 0; // int
-    binary_logger (&result, env, thiz, str, &intAddSerial, &intAddVector,
+    binary_logger (&result, env, thiz, str, &intMulSerial, &intMulVector,
                    output, input1, input2, output_expected, length,
                    array_o_type, array_i1_type, array_i2_type);
     // loggerTest(&result, env, thiz, 2, 3);
@@ -1055,7 +1157,7 @@ Java_com_vecandroid_MathOpsBench_floatMulBenchNative( JNIEnv* env,
     int array_o_type = 1; // float
     int array_i1_type = 1; // float
     int array_i2_type = 1; // float
-    binary_logger (&result, env, thiz, str, &floatAddSerial, &floatAddVector,
+    binary_logger (&result, env, thiz, str, &floatMulSerial, &floatMulVector,
                    output, input1, input2, output_expected, length,
                    array_o_type, array_i1_type, array_i2_type);
     // loggerTest(&result, env, thiz, 2, 3);
@@ -1102,7 +1204,7 @@ Java_com_vecandroid_MathOpsBench_intEqBenchNative( JNIEnv* env,
     int array_o_type = 3; // uint32_t
     int array_i1_type = 0; // int
     int array_i2_type = 0; // int
-    binary_logger (&result, env, thiz, str, &intAddSerial, &intAddVector,
+    binary_logger (&result, env, thiz, str, &intEqSerial, &intEqVector,
                    output, input1, input2, output_expected, length,
                    array_o_type, array_i1_type, array_i2_type);
     // loggerTest(&result, env, thiz, 2, 3);
@@ -1145,7 +1247,7 @@ Java_com_vecandroid_MathOpsBench_floatEqBenchNative( JNIEnv* env,
     int array_o_type = 3; // uint32_t
     int array_i1_type = 1; // float
     int array_i2_type = 1; // float
-    binary_logger (&result, env, thiz, str, &floatAddSerial, &floatAddVector,
+    binary_logger (&result, env, thiz, str, &floatEqSerial, &floatEqVector,
                    output, input1, input2, output_expected, length,
                    array_o_type, array_i1_type, array_i2_type);
     // loggerTest(&result, env, thiz, 2, 3);
@@ -1160,7 +1262,7 @@ intGeSerial(uint32_t *output, int *input1, int *input2, int N)
 {
     int i;
     for (i = 0; i < N; i++) {
-        output[i] = (input1[i] == input2[i])? (uint32_t)1 : (uint32_t)0;
+        output[i] = (input1[i] >= input2[i])? (uint32_t)1 : (uint32_t)0;
     }
 }
 
@@ -1189,7 +1291,7 @@ Java_com_vecandroid_MathOpsBench_intGeBenchNative( JNIEnv* env,
     int array_o_type = 3; // uint32_t
     int array_i1_type = 0; // int
     int array_i2_type = 0; // int
-    binary_logger (&result, env, thiz, str, &intAddSerial, &intAddVector,
+    binary_logger (&result, env, thiz, str, &intGeSerial, &intGeVector,
                    output, input1, input2, output_expected, length,
                    array_o_type, array_i1_type, array_i2_type);
     // loggerTest(&result, env, thiz, 2, 3);
@@ -1204,7 +1306,7 @@ floatGeSerial(uint32_t *output, float *input1, float *input2, int N)
 {
     int i;
     for (i = 0; i < N; i++) {
-        output[i] = (input1[i] == input2[i])? (uint32_t)1 : (uint32_t)0;
+        output[i] = (input1[i] >= input2[i])? (uint32_t)1 : (uint32_t)0;
     }
 }
 
@@ -1232,13 +1334,274 @@ Java_com_vecandroid_MathOpsBench_floatGeBenchNative( JNIEnv* env,
     int array_o_type = 0; // int
     int array_i1_type = 1; // float
     int array_i2_type = 1; // float
-    binary_logger (&result, env, thiz, str, &floatAddSerial, &floatAddVector,
+    binary_logger (&result, env, thiz, str, &floatGeSerial, &floatGeVector,
                    output, input1, input2, output_expected, length,
                    array_o_type, array_i1_type, array_i2_type);
     // loggerTest(&result, env, thiz, 2, 3);
     // free(str);
     return result;
 }
+
+/* this is the entry-wise comparison (less than or equal to) implementation in C for integers */
+static void
+intLeSerial(uint32_t *output, int *input1, int *input2, int N)
+{
+    int i;
+    for (i = 0; i < N; i++) {
+        output[i] = (input1[i] <= input2[i])? (uint32_t)1 : (uint32_t)0;
+    }
+}
+
+
+/* this is the entry-wise comparison (less than or equal to) operation for integers */
+jstring
+Java_com_vecandroid_MathOpsBench_intLeBenchNative( JNIEnv* env,
+                                               jobject thiz, jint l)
+{
+    jstring result;
+    char *str;
+    asprintf(&str, "Entry-wise comparison (less than or equal to) on integers");
+    int length = l; // power of 4
+    uint32_t output[length];
+    uint32_t output_expected[length];
+    int input1[length];
+    int input2[length];
+
+    int i;
+    srand(time(NULL));
+    for (i = 0; i < length; i++) {
+        input1[i] = (int) (-50 + (rand() % 100));
+        input2[i] = (int) (-50 + (rand() % 100));
+        // input[i] = (short) 1;
+        output[i] = (uint32_t) 0;
+    }
+    int array_o_type = 3; // uint32_t
+    int array_i1_type = 0; // int
+    int array_i2_type = 0; // int
+    binary_logger (&result, env, thiz, str, &intLeSerial, &intLeVector,
+                   output, input1, input2, output_expected, length,
+                   array_o_type, array_i1_type, array_i2_type);
+    // loggerTest(&result, env, thiz, 2, 3);
+    // free(str);
+    return result;
+}
+
+
+/* this is the entry-wise comparison (less than or equal to) implementation in C for floating points */
+static void
+floatLeSerial(uint32_t *output, float *input1, float *input2, int N)
+{
+    int i;
+    for (i = 0; i < N; i++) {
+        output[i] = (input1[i] <= input2[i])? (uint32_t)1 : (uint32_t)0;
+    }
+}
+
+/* this is the entry-wise comparison (less than or equal to) operation for floating points */
+jstring
+Java_com_vecandroid_MathOpsBench_floatLeBenchNative( JNIEnv* env,
+                                               jobject thiz, jint l)
+{
+    jstring result;
+    char *str;
+    asprintf(&str, "Entry-wise comparison (less than or equal to) on floating points");
+    int length = 1024; // power of 4
+    uint32_t output[length];
+    uint32_t output_expected[length];
+    float input1[length];
+    float input2[length];
+
+    int i;
+    srand(time(NULL));
+    for (i = 0; i < length; i++) {
+        input1[i] = -10.f + 40.f * (float)(rand()) / RAND_MAX;
+        input2[i] = -10.f + 40.f * (float)(rand()) / RAND_MAX;
+        output[i] = (uint32_t) 0;
+    }
+    int array_o_type = 0; // int
+    int array_i1_type = 1; // float
+    int array_i2_type = 1; // float
+    binary_logger (&result, env, thiz, str, &floatLeSerial, &floatLeVector,
+                   output, input1, input2, output_expected, length,
+                   array_o_type, array_i1_type, array_i2_type);
+    // loggerTest(&result, env, thiz, 2, 3);
+    // free(str);
+    return result;
+}
+
+/* this is the entry-wise comparison (greater than) implementation in C for integers */
+static void
+intGtSerial(uint32_t *output, int *input1, int *input2, int N)
+{
+    int i;
+    for (i = 0; i < N; i++) {
+        output[i] = (input1[i] > input2[i])? (uint32_t)1 : (uint32_t)0;
+    }
+}
+
+/* this is the entry-wise comparison (greater than) operation for integers */
+jstring
+Java_com_vecandroid_MathOpsBench_intGtBenchNative( JNIEnv* env,
+                                               jobject thiz, jint l)
+{
+    jstring result;
+    char *str;
+    asprintf(&str, "Entry-wise comparison (greater than) on integers");
+    int length = l; // power of 4
+    uint32_t output[length];
+    uint32_t output_expected[length];
+    int input1[length];
+    int input2[length];
+
+    int i;
+    srand(time(NULL));
+    for (i = 0; i < length; i++) {
+        input1[i] = (int) (-50 + (rand() % 100));
+        input2[i] = (int) (-50 + (rand() % 100));
+        // input[i] = (short) 1;
+        output[i] = (uint32_t) 0;
+    }
+    int array_o_type = 3; // uint32_t
+    int array_i1_type = 0; // int
+    int array_i2_type = 0; // int
+    binary_logger (&result, env, thiz, str, &intGtSerial, &intGtVector,
+                   output, input1, input2, output_expected, length,
+                   array_o_type, array_i1_type, array_i2_type);
+    // loggerTest(&result, env, thiz, 2, 3);
+    // free(str);
+    return result;
+}
+
+
+/* this is the entry-wise comparison (greater than) implementation in C for floating points */
+static void
+floatGtSerial(uint32_t *output, float *input1, float *input2, int N)
+{
+    int i;
+    for (i = 0; i < N; i++) {
+        output[i] = (input1[i] > input2[i])? (uint32_t)1 : (uint32_t)0;
+    }
+}
+
+/* this is the entry-wise comparison (greater than) operation for floating points */
+jstring
+Java_com_vecandroid_MathOpsBench_floatGtBenchNative( JNIEnv* env,
+                                               jobject thiz, jint l)
+{
+    jstring result;
+    char *str;
+    asprintf(&str, "Entry-wise comparison (greater than) on floating points");
+    int length = 1024; // power of 4
+    uint32_t output[length];
+    uint32_t output_expected[length];
+    float input1[length];
+    float input2[length];
+
+    int i;
+    srand(time(NULL));
+    for (i = 0; i < length; i++) {
+        input1[i] = -10.f + 40.f * (float)(rand()) / RAND_MAX;
+        input2[i] = -10.f + 40.f * (float)(rand()) / RAND_MAX;
+        output[i] = (uint32_t) 0;
+    }
+    int array_o_type = 0; // int
+    int array_i1_type = 1; // float
+    int array_i2_type = 1; // float
+    binary_logger (&result, env, thiz, str, &floatGtSerial, &floatGtVector,
+                   output, input1, input2, output_expected, length,
+                   array_o_type, array_i1_type, array_i2_type);
+    // loggerTest(&result, env, thiz, 2, 3);
+    // free(str);
+    return result;
+}
+
+/* this is the entry-wise comparison (less than) implementation in C for integers */
+static void
+intLtSerial(uint32_t *output, int *input1, int *input2, int N)
+{
+    int i;
+    for (i = 0; i < N; i++) {
+        output[i] = (input1[i] < input2[i])? (uint32_t)1 : (uint32_t)0;
+    }
+}
+
+
+/* this is the entry-wise comparison (less than) operation for integers */
+jstring
+Java_com_vecandroid_MathOpsBench_intLtBenchNative( JNIEnv* env,
+                                               jobject thiz, jint l)
+{
+    jstring result;
+    char *str;
+    asprintf(&str, "Entry-wise comparison (less than) on integers");
+    int length = l; // power of 4
+    uint32_t output[length];
+    uint32_t output_expected[length];
+    int input1[length];
+    int input2[length];
+
+    int i;
+    srand(time(NULL));
+    for (i = 0; i < length; i++) {
+        input1[i] = (int) (-50 + (rand() % 100));
+        input2[i] = (int) (-50 + (rand() % 100));
+        // input[i] = (short) 1;
+        output[i] = (uint32_t) 0;
+    }
+    int array_o_type = 3; // uint32_t
+    int array_i1_type = 0; // int
+    int array_i2_type = 0; // int
+    binary_logger (&result, env, thiz, str, &intLtSerial, &intLtVector,
+                   output, input1, input2, output_expected, length,
+                   array_o_type, array_i1_type, array_i2_type);
+    // loggerTest(&result, env, thiz, 2, 3);
+    // free(str);
+    return result;
+}
+
+
+/* this is the entry-wise comparison (less than) implementation in C for floating points */
+static void
+floatLtSerial(uint32_t *output, float *input1, float *input2, int N)
+{
+    int i;
+    for (i = 0; i < N; i++) {
+        output[i] = (input1[i] < input2[i])? (uint32_t)1 : (uint32_t)0;
+    }
+}
+
+/* this is the entry-wise comparison (less than) operation for floating points */
+jstring
+Java_com_vecandroid_MathOpsBench_floatLtBenchNative( JNIEnv* env,
+                                               jobject thiz, jint l)
+{
+    jstring result;
+    char *str;
+    asprintf(&str, "Entry-wise comparison (less than) on floating points");
+    int length = 1024; // power of 4
+    uint32_t output[length];
+    uint32_t output_expected[length];
+    float input1[length];
+    float input2[length];
+
+    int i;
+    srand(time(NULL));
+    for (i = 0; i < length; i++) {
+        input1[i] = -10.f + 40.f * (float)(rand()) / RAND_MAX;
+        input2[i] = -10.f + 40.f * (float)(rand()) / RAND_MAX;
+        output[i] = (uint32_t) 0;
+    }
+    int array_o_type = 0; // int
+    int array_i1_type = 1; // float
+    int array_i2_type = 1; // float
+    binary_logger (&result, env, thiz, str, &floatLtSerial, &floatLtVector,
+                   output, input1, input2, output_expected, length,
+                   array_o_type, array_i1_type, array_i2_type);
+    // loggerTest(&result, env, thiz, 2, 3);
+    // free(str);
+    return result;
+}
+
 
 
 /**************************************

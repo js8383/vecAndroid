@@ -1,26 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" >
-
-    <item
-        jar="/Users/yongshanding/AndroidStudioProjects/vecAndroid/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="eda1637790c16e174014db5ca1a5234c9151cb8d">
-        <dex dex="/Users/yongshanding/AndroidStudioProjects/vecAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_36b3cdfa46933760ad374b0c63e58b7bbce92ed4/classes.dex" />
-    </item>
-    <item
-        jar="/Users/yongshanding/AndroidStudioProjects/vecAndroid/app/build/intermediates/exploded-aar/apitemplate-release/jars/classes.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="e90f302e8ebb955cc543bfc534c054c03000bc06">
-        <dex dex="/Users/yongshanding/AndroidStudioProjects/vecAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/intermediates-exploded-aar-apitemplate-release_4a4445d61a53f691c41ee9b72fd5a72980e4b6d8/classes.dex" />
-    </item>
-    <item
-        jar="/Users/yongshanding/AndroidStudioProjects/vecAndroid/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="cdad6e95c289f39e4458cebf1adad63c66264287">
-        <dex dex="/Users/yongshanding/AndroidStudioProjects/vecAndroid/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_d7cf807c17256709403396cdb4a1ff96b532a367/classes.dex" />
-    </item>
-
-</items>
+<items version="2" />
