@@ -52,6 +52,7 @@ public interface VecAndroidApi {
     interface Kernel {
         public boolean map_volume(FloatBuffer radius, FloatBuffer volume);
         public boolean map_saxpy(FloatBuffer scale, FloatBuffer x, FloatBuffer y, FloatBuffer result);
+        public boolean map_mandelbrot(FloatBuffer row, FloatBuffer col, FloatBuffer count, float max, float w_m1, float h_m1, float left, float right, float top, float bottom);
         
     }
     //BenchReference

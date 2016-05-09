@@ -22,6 +22,26 @@ include $(BUILD_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)
 
+LOCAL_MODULE := mandelbrot
+LOCAL_SRC_FILES := neoncompile_mandelbrot_core.cpp
+
+ifeq ($(TARGET_ARCH_ABI),$(filter $(TARGET_ARCH_ABI), armeabi-v7a x86))
+    LOCAL_CFLAGS := -DHAVE_NEON=1
+ifeq ($(TARGET_ARCH_ABI),x86)
+    LOCAL_CFLAGS += -mssse3
+endif
+    LOCAL_SRC_FILES += neoncompile_mandelbrot_kernel.c.neon
+endif
+
+LOCAL_STATIC_LIBRARIES := cpufeatures
+LOCAL_ALLOW_UNDEFINED_SYMBOLS := true
+LOCAL_LDLIBS := -llog
+
+include $(BUILD_SHARED_LIBRARY)
+
+
+include $(CLEAR_VARS)
+
 LOCAL_MODULE := saxpy
 LOCAL_SRC_FILES := neoncompile_saxpy_core.cpp
 
