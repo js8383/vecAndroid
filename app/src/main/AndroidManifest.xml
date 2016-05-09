@@ -21,9 +21,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:label="Sample Algorithms Benchmark"
             android:name=".AlgorithmsBenchActivity"
             android:parentActivityName="com.example.bench.MainActivity"/>
         <activity
+            android:label="Sample Kernels Benchmark"
             android:name=".KernelsBenchActivity"
             android:parentActivityName="com.example.bench.MainActivity">
         </activity>

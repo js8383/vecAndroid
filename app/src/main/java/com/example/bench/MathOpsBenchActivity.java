@@ -32,8 +32,6 @@ public class MathOpsBenchActivity extends Activity
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.mathopsbenchmark);
 
         Intent intent = getIntent();
-
-        // 2. get message value from intent
         int size = Integer.parseInt(intent.getStringExtra("size"));
 
         TextView tv0 = new TextView(this);

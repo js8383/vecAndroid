@@ -19,10 +19,19 @@ public class KernelOps implements VecAndroidApi.Kernel {
     public KernelOps() {
         System.loadLibrary("volume");
         System.loadLibrary("saxpy");
+        System.loadLibrary("mandelbrot");
     }
     
     //Kernel functions start
     
+    //Kernel mandelbrot
+    public static native boolean mandelbrot(FloatBuffer row, FloatBuffer col, FloatBuffer count, float max, float w_m1, float h_m1, float left, float right, float top, float bottom);
+    
+    @Override
+    public boolean map_mandelbrot(FloatBuffer row, FloatBuffer col, FloatBuffer count, float max, float w_m1, float h_m1, float left, float right, float top, float bottom) {
+        return mandelbrot(row, col, count, max, w_m1, h_m1, left, right, top, bottom);
+    }
+
     //Kernel saxpy
     public static native boolean saxpy(FloatBuffer scale, FloatBuffer x, FloatBuffer y, FloatBuffer result);
     

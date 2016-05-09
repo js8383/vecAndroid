@@ -50,8 +50,17 @@ public class MainActivity extends Activity {
         kernels.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent newIntent = new Intent(MainActivity.this, KernelsBenchActivity.class);
-                startActivity(newIntent);
+                if (arraysize.getText().toString().equals("")) {
+                    Context context = getApplicationContext();
+                    CharSequence text = "You must specify array length!";
+                    int duration = Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                } else {
+                    Intent newIntent = new Intent(MainActivity.this, KernelsBenchActivity.class);
+                    newIntent.putExtra("size", arraysize.getText().toString());
+                    startActivity(newIntent);
+                }
             }
         });
     }
