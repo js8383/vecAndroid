@@ -10,26 +10,29 @@ in particular as a native Python module.
 
 import subprocess
 import os
-from vecandroid.kernel import *
-from vecandroid.compiler_constants import *
-from vecandroid.compiler_generic import Compiler_Generic
-from vecandroid.compiler_arm import Compiler_Arm
+from neoncompile.kernel import *
+from neoncompile.compiler_constants import *
+from neoncompile.compiler_generic import Compiler_Generic
+from neoncompile.compiler_arm import Compiler_Arm
 
 class Compiler:
 
   #Utility functions: output file names
 
   def get_java_file(k):
-    return 'vecandroid_%s_java.h'%(k.name)
+    return 'neoncompile_%s_java.h'%(k.name)
 
   def get_kernel_h_file(k):
-    return 'vecandroid_%s_kernel.h'%(k.name)
+    return 'neoncompile_%s_kernel.h'%(k.name)
 
   def get_kernel_file(k):
-    return 'vecandroid_%s_kernel.c'%(k.name)
+    return 'neoncompile_%s_kernel.c'%(k.name)
 
   def get_core_file(k):
-    return 'vecandroid_%s_core.cpp'%(k.name)
+    return 'neoncompile_%s_core.cpp'%(k.name)
+
+  def get_neonmore_h_file():
+    return 'neon_more.h'
 
   #Generates the core file
   def compile_core(k, options, include_files, path):
@@ -162,6 +165,7 @@ class Compiler:
     with open(fullpath, 'w') as file:
       file.write(src.get_code())
     print('Saved to file: %s'%(fullpath))
+
 
   #Generates the Java API
   def compile_java(k, options, path):
@@ -308,70 +312,214 @@ class Compiler:
     ##########################
     # API for java: KernelOps
     ##########################
-    src = Formatter()
-    src.section('Generated API: KernelOps')
-    #Package
-    if options.java_package is not None:
-      # src += 'package %s;'%(options.java_package)
-      src += 'package com.vecandroid;' #TODO: Edit this if necessary
-    #Imports
-    src += 'import java.nio.*;'
-    src += '//import java.util.Arrays;'
-    src += ''
-    #VecAndroid class
-    arg_str = ', '.join('%s %s'%(uniform_type if arg.is_uniform else buffer_type, arg.name) for arg in args)
-    src += 'public class KernelOps implements VecAndroidApi.Kernel {'
-    src.indent()
-    #Helper functions to allocate and free aligned direct buffers
-    #JNI wrapper
-    src += '//JNI wrappers'
-    src += 'public static native boolean %s(%s);'%(k.name, arg_str)
-    src += 'private static native ByteBuffer allocate(long N);'
-    src += 'private static native boolean free(Buffer buffer);'
-    src += '//Helper functions to allocate and free aligned direct buffers'
-    src += 'public static %s newBuffer(long N) {'%(buffer_type)
-    src.indent()
-    src += 'return allocate(N * %d).order(ByteOrder.nativeOrder()).as%s();'%(4, buffer_type)
-    src.unindent()
-    src += '}'
-    src += 'public static boolean deleteBuffer(Buffer buffer) {'
-    src.indent()
-    src += 'return free(buffer);'
-    src.unindent()
-    src += '}'
-    src += ''
-    src += '//Import kernel function library'
-    src += 'public KernelOps() { System.loadLibrary("%s"); }'%(k.name)
-    src += ''
-    src += '//Testing section (implementing functions in VecAndroidApi)'
-    src += '@Override'
-    src += 'public String foo() {'
-    src.indent()
-    src += 'long b = 3L;'
-    src += 'FloatBuffer b1 = newBuffer(b);'
-    src += 'FloatBuffer b2 = newBuffer(b);'
-    src += 'float[] b11 = new float[] {1.f, 2.f, 3.f};'
-    src += 'float[] b12 = new float[] {1.f, 2.f, 3.f};'
-    src += 'b1.put(b11);'
-    src += 'b2.put(b12);'
-    src += 'b1.position(0);'
-    src += 'b2.position(0);'
-    src += 'volume1(b1, b2);' #function name
-    src += 'return(Float.toString(b2.get(2)));'
-    src.unindent()
-    src += '}'
-    src.unindent()
-    src += '}'
-    src += ''
-    #Save code to file
+
     file_name = 'KernelOps.java'
     javapath = os.path.join(path, 'java/com/vecandroid')
     if not os.path.exists(javapath):
       os.makedirs(javapath)
     fullpath = os.path.join(javapath, file_name)
-    with open(fullpath, 'w') as file:
-      file.write(src.get_code())
+    arg_str = ', '.join('%s %s'%(uniform_type if arg.is_uniform else buffer_type, arg.name) for arg in args)
+    arg_str_no_type = ', '.join(arg.name for arg in args)
+    # Initialize a java file
+    if not os.path.isfile(fullpath):
+      src = Formatter()
+      src.section('Generated API: KernelOps')
+      #Package
+      if options.java_package is not None:
+        # src += 'package %s;'%(options.java_package)
+        src += 'package com.vecandroid;' #TODO: Edit this if necessary
+      #Imports
+      src += 'import java.nio.*;'
+      src += '//import java.util.Arrays;'
+      src += ''
+      #VecAndroid class
+      src += 'public class KernelOps implements VecAndroidApi.Kernel {'
+      src.indent()
+      #Helper functions to allocate and free aligned direct buffers
+      src += '//Helper functions to allocate and free aligned direct buffers'
+      src += 'private static native ByteBuffer allocate(long N);'
+      src += 'private static native boolean free(Buffer buffer);'
+      src += 'public static %s newBuffer(long N) {'%(buffer_type)
+      src.indent()
+      src += 'return allocate(N * %d).order(ByteOrder.nativeOrder()).as%s();'%(4, buffer_type)
+      src.unindent()
+      src += '}'
+      src += 'public static boolean deleteBuffer(Buffer buffer) {'
+      src.indent()
+      src += 'return free(buffer);'
+      src.unindent()
+      src += '}'
+      src += '//Import kernel function library'
+      src += 'public KernelOps() {'
+      # src.indent()
+      # src += 'System.loadLibrary("%s");'%(k.name)
+      # src.unindent()
+      src += '}'
+      src += ''
+      src += '//Kernel functions start'
+      src += ''
+      src += '//Kernel functions end'
+      src.unindent()
+      src += '}'
+      with open(fullpath, 'w') as file:
+        file.write(src.get_code())
+
+
+    # Add kernel functions to file
+    src = Formatter()
+    src.indent()
+    src += '//Kernel %s'%(k.name)
+    src += 'public static native boolean %s(%s);'%(k.name, arg_str)
+    src += ''
+    src += '@Override'
+    src += 'public boolean map_%s(%s) {'%(k.name, arg_str) # API map function
+    src.indent()
+    src += 'return %s(%s);'%(k.name, arg_str_no_type) #function name and arguments
+    src.unindent()
+    src += '}'
+    src.unindent()
+    # src += '}'
+    src += ''
+
+    file_name = 'KernelOps.java'
+    javapath = os.path.join(path, 'java/com/vecandroid')
+    if not os.path.exists(javapath):
+      os.makedirs(javapath)
+    fullpath = os.path.join(javapath, file_name)
+
+    kernel_file = open(fullpath, "r")
+    searchline = '    public KernelOps() {\n'
+    contents = kernel_file.readlines()
+    j = contents.index(searchline)
+    kernel_file.close()
+
+    contents.insert(-2, src.get_code())
+    lib_name = ' ' * 8 + 'System.loadLibrary("%s");\n'%(k.name)
+    contents.insert(j + 1, lib_name)
+
+    kernel_file = open(fullpath, "w")
+    contents = "".join(contents)
+    kernel_file.write(contents)
+    kernel_file.close()
     print('Saved to file: %s'%(fullpath))
+
+    ##############################
+    # API for java: VecAndroidApi
+    ##############################
+
+    file_name = 'VecAndroidApi.java'
+    javapath = os.path.join(path, 'java/com/vecandroid')
+    if not os.path.exists(javapath):
+      os.makedirs(javapath)
+    fullpath = os.path.join(javapath, file_name)
+    arg_str = ', '.join('%s %s'%(uniform_type if arg.is_uniform else buffer_type, arg.name) for arg in args)
+    # Initialize a java file
+    if not os.path.isfile(fullpath):
+      src = Formatter()
+      src.section('Generated API: VecAndroidApi')
+      #Package
+      if options.java_package is not None:
+        # src += 'package %s;'%(options.java_package)
+        src += 'package com.vecandroid;' #TODO: Edit this if necessary
+      #Imports
+      src += 'import java.nio.*;'
+      src += 'import java.util.List;'
+      src += ''
+      #VecAndroid class
+      src += 'public interface VecAndroidApi {'
+      src.indent()
+      #Library for math operations
+      src += '//Library for math operations'
+      src += 'interface MathOp {'
+      src.indent()
+      src += '//Absolute value'
+      src += 'public int[] intAbs(int[] a);'
+      src += 'public List<Integer> intAbs(List<Integer> a);'
+      src += 'public float[] floatAbs(float[] a);'
+      src += 'public List<Float> floatAbs(List<Float> a);'
+      src += '//Addition'
+      src += 'public int[] intAdd(int[] a, int[] b);'
+      src += 'public List<Integer> intAdd(List<Integer> a, List<Integer> b);'
+      src += 'public float[] floatAdd(float[] a, float[] b);'
+      src += 'public List<Float> floatAdd(List<Float> a, List<Float> b);'
+      src += '//Subtraction'
+      src += 'public int[] intSub(int[] a, int[] b);'
+      src += 'public List<Integer> intSub(List<Integer> a, List<Integer> b);'
+      src += 'public float[] floatSub(float[] a, float[] b);'
+      src += 'public List<Float> floatSub(List<Float> a, List<Float> b);'
+      src += '//Mutiplication'
+      src += 'public int[] intMul(int[] a, int[] b);'
+      src += 'public List<Integer> intMul(List<Integer> a, List<Integer> b);'
+      src += 'public float[] floatMul(float[] a, float[] b);'
+      src += 'public List<Float> floatMul(List<Float> a, List<Float> b);'
+      src += '//Comparison - Equal'
+      src += 'public int[] intEq(int[] a, int[] b);'
+      src += 'public List<Integer> intEq(List<Integer> a, List<Integer> b);'
+      src += 'public float[] floatEq(float[] a, float[] b);'
+      src += 'public List<Float> floatEq(List<Float> a, List<Float> b);'
+      src += '//Comparison - Greater or equal to'
+      src += 'public int[] intGe(int[] a, int[] b);'
+      src += 'public List<Integer> intGe(List<Integer> a, List<Integer> b);'
+      src += 'public float[] floatGe(float[] a, float[] b);'
+      src += 'public List<Float> floatGe(List<Float> a, List<Float> b);'
+      src += '//Comparison - Less or equal to'
+      src += 'public int[] intLe(int[] a, int[] b);'
+      src += 'public List<Integer> intLe(List<Integer> a, List<Integer> b);'
+      src += 'public float[] floatLe(float[] a, float[] b);'
+      src += 'public List<Float> floatLe(List<Float> a, List<Float> b);'
+      src.unindent()
+      src += '}'
+      #Library for Algorithms
+      src += '//Library for Algorithms'
+      src += 'interface Algorithm {'
+      src.indent()
+      src += ''
+      src.unindent()
+      src += '}'
+      #Library for Kernel
+      src += '//Library for Kernel'
+      src += 'interface Kernel {'
+      src.indent()
+      src += ''
+      src.unindent()
+      src += '}'
+      #BenchReference
+      src += '//BenchReference'
+      src += 'interface BenchReference {'
+      src.indent()
+      src += 'public int[] intAbsSerial(int[] a);'
+      src.unindent()
+      src += '}'
+      src.unindent()
+      src += '}'
+      with open(fullpath, 'w') as file:
+        file.write(src.get_code())
+
+
+    # Add kernel library functions to file
+    src = Formatter()
+
+    api_file_name = 'VecAndroidApi.java'
+    javapath = os.path.join(path, 'java/com/vecandroid')
+    if not os.path.exists(javapath):
+      os.makedirs(javapath)
+    apipath = os.path.join(javapath, api_file_name)
+
+    api_file = open(apipath, "r")
+    searchline = '    interface Kernel {\n'
+    api_contents = api_file.readlines()
+    i = api_contents.index(searchline)
+    api_file.close()
+
+    new_func_name = ' ' * 8 + 'public boolean map_%s(%s);\n'%(k.name, arg_str)
+    api_contents.insert(i + 1, new_func_name)
+
+    api_file = open(apipath, "w")
+    api_contents = "".join(api_contents)
+    api_file.write(api_contents)
+    api_file.close()
+    print('Saved to file: %s'%(apipath))
+
 
   #Generates the kernel
   def compile_kernel_h(k, options, path):
@@ -410,6 +558,43 @@ class Compiler:
       file.write(src.get_code())
     print('Saved to file: %s'%(fullpath))
 
+  #Generate supplement to neon intrinsics
+  def compile_neonmore_h(path):
+    src = Formatter()
+    src.section('Generated supplement to NEON intrinsics:')
+    src += '#include <stdint.h>'
+    src += '#include <arm_neon.h>'
+    src += ''
+    src += 'uint32_t vmovemask_f32(float32x4_t x) {'
+    src.indent()
+    src += 'uint32x4_t a = vandq_u32(vreinterpretq_u32_f32(x), (uint32x4_t) {0x1, 0x2, 0x4, 0x8});'
+    src += 'uint32x4_t b = vextq_u32(a, a, 2);'
+    src += 'uint32x4_t c = vorrq_u32(a, b);'
+    src += 'uint32x4_t d = vextq_u32(c, c, 3);'
+    src += 'uint32x4_t e = vorrq_u32(c, d);'
+    src += 'return vgetq_lane_u32(e, 0);'
+    src.unindent()
+    src += '}'
+    src += ''
+    src += 'uint32_t vmovemask_u32(uint32x4_t x) {'
+    src.indent()
+    src += 'uint32x4_t a = vandq_u32(x, (uint32x4_t) {0x1, 0x2, 0x4, 0x8});'
+    src += 'uint32x4_t b = vextq_u32(a, a, 2);'
+    src += 'uint32x4_t c = vorrq_u32(a, b);'
+    src += 'uint32x4_t d = vextq_u32(c, c, 3);'
+    src += 'uint32x4_t e = vorrq_u32(c, d);'
+    src += 'return vgetq_lane_u32(e, 0);'
+    src.unindent()
+    src += '}'
+    #Save code to file
+    file_name = Compiler.get_neonmore_h_file()
+    jnipath = os.path.join(path, 'jni')
+    if not os.path.exists(jnipath):
+      os.makedirs(jnipath)
+    fullpath = os.path.join(jnipath, file_name)
+    with open(fullpath, 'w') as file:
+      file.write(src.get_code())
+    print('Saved to file: %s'%(fullpath))
 
   #Generates the kernel
   def compile_kernel(k, options, path):
@@ -417,7 +602,7 @@ class Compiler:
     src.section('Generated kernel: %s'%(k.name))
     src += '//Integer types'
     src += '#include <stdint.h>'
-    src += '#include "vecandroid_volume1_kernel.h"'
+    src += '#include "neoncompile_%s_kernel.h"'%(k.name)
     src += ''
     #Generate an architecture-specific kernel
     src += Compiler_Generic.compile_kernel(k, options)
@@ -451,6 +636,8 @@ class Compiler:
         options.threads = 1
     #Show options
     options.show(path)
+    #Generate neon supplement
+    Compiler.compile_neonmore_h(path)
     #Generate the kernel
     Compiler.compile_kernel_h(kernel, options, path)
     Compiler.compile_kernel(kernel, options, path)
@@ -464,4 +651,3 @@ class Compiler:
       build_flags.append('-I$JAVA_HOME/include/linux/')
     #Generate the core
     Compiler.compile_core(kernel, options, include_files, path)
-

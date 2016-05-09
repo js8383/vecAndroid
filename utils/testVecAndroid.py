@@ -1,13 +1,16 @@
 # Example from David Farrow, vecpy, (2015), GitHub repository, https://github.com/undefx/vecpy.git
 # Modified by Yongshan Ding in May, 2016
 
-#Import VecPy
-from vecandroid.runtime import *
-from vecandroid.compiler_constants import *
+#Import neoncompile
+from neoncompile.runtime import *
+from neoncompile.compiler_constants import *
 
 #Define the kernel
-def volume(radius, volume):
+def shellvolume1(radius, volume):
   volume = (4/3 * math.pi) * (radius ** 3)
+
+def shellvolume2(radius, volume):
+  volume = (100/3 * math.pi) * (radius ** 3)
 
 #Generate some data
 def data():
@@ -16,7 +19,8 @@ def data():
   return array
 radii, volumes = data(), data()
 
-#Call VecPy to generate the native module
+#Call neoncompile to generate the native module
 path = '/Users/yongshanding/AndroidStudioProjects/vecAndroid/apitemplate/src/main/' #TODO: Modify this if neccessary
-vectorize(volume, Options(Architecture.neon, DataType.float), path)
+vectorize(shellvolume1, Options(Architecture.neon, DataType.float), path)
+vectorize(shellvolume2, Options(Architecture.neon, DataType.float), path)
 

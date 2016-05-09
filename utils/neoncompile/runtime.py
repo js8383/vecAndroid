@@ -4,8 +4,8 @@
 import array
 import math
 import time
-from vecandroid.parser import Parser
-from vecandroid.compiler import Compiler
+from neoncompile.parser import Parser
+from neoncompile.compiler import Compiler
 
 #Invokes the VecAndroid stack
 def vectorize(func, options, path=0):

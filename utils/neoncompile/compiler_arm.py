@@ -1,9 +1,9 @@
 # Inspired by David Farrow, vecpy, (2015), GitHub repository, https://github.com/undefx/vecpy.git
 # Created by Yongshan Ding in May, 2016
 
-# ARM NEON support 
-from vecandroid.kernel import *
-from vecandroid.compiler_constants import *
+# ARM NEON support
+from neoncompile.kernel import *
+from neoncompile.compiler_constants import *
 
 class Compiler_Arm:
 
@@ -26,6 +26,7 @@ class Compiler_Arm:
     src += '#include <stdint.h>'
     src += '#include <math.h>'
     src += '#include <arm_neon.h>'
+    src += '#include "neon_more.h"'
     src += ''
     #Function header
     src += '//Kernel function: %s'%(k.name)
@@ -456,7 +457,7 @@ class Compiler_Arm:
     def __init__(self, src, size):
       Compiler_Arm.Translator.__init__(self, src, size)
       self.type = 'float32x4_t'
-      self.test = '_mm_movemask_ps' #TODO
+      self.test = 'vmovemask_f32' #TODO: double check
       self.insert = 'vsetq_lane_f32' #TODO: double check args order changed '_mm_insert_epi32'
       self.extract = 'vgetq_lane_f32'#TODO: same order!! '_mm_extract_epi32'
     #Misc
@@ -477,8 +478,10 @@ class Compiler_Arm:
     def store(self, *args):
       self.vector_0_2('vst1q_f32', args)
     def mask(self, *args):
-      (input, output, mask) = args
-      self.mask_1_2(input, output, mask, '_mm_or_ps', '_mm_and_ps', '_mm_andnot_ps') #TODO
+      #(input, output, mask) = args
+      #self.mask_1_2(input, output, mask, '_mm_or_ps', '_mm_and_ps', '_mm_andnot_ps') #TODO
+      args = (args[1], args[2], args[0], args[1])
+      self.vector_1_3('vbslq_f32', args)
     #Python arithmetic operators
     def add(self, *args):
       self.vector_1_2('vaddq_f32', args)
@@ -628,7 +631,7 @@ class Compiler_Arm:
     def __init__(self, src, size):
       Compiler_Arm.Translator.__init__(self, src, size)
       self.type = 'uint32x4_t'
-      self.test = '_mm_movemask_epi8' #TODO?
+      self.test = 'vmovemask_u32' #TODO: double check
       self.insert = 'vsetq_lane_u32' #TODO: double check args order changed '_mm_insert_epi32'
       self.extract = 'vgetq_lane_u32'#TODO: same order!! '_mm_extract_epi32'
       self.all_zeroes = '_mm_testz_si128'#TODO?
@@ -655,7 +658,7 @@ class Compiler_Arm:
     def mask(self, *args): #TODO: double check
       #(input, output, mask) = args
       #self.mask_1_2(input, output, mask, '_mm_or_si128', '_mm_and_si128', '_mm_andnot_si128')
-      args = (args[1], args[0], args[2])
+      args = (args[1], args[2], args[0], args[1])
       self.vector_1_3('vbslq_u32', args)
     #Python arithmetic operators
     def add(self, *args):

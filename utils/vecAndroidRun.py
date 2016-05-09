@@ -4,8 +4,8 @@ import inspect
 import subprocess
 import importlib.util
 import shutil
-from vecandroid.runtime import *
-from vecandroid.compiler_constants import *
+from neoncompile.runtime import *
+from neoncompile.compiler_constants import *
 
 androidmk_singlemodule_template = '''
 include $(CLEAR_VARS)
