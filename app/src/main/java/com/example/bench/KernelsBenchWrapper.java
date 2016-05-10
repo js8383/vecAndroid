@@ -16,6 +16,7 @@ import java.util.Random;
  */
 public class KernelsBenchWrapper {
 
+    // For mandelbrot
     private static final int max = 100;
     private static final int w = 801;
     private static final int h = 601;
@@ -38,6 +39,20 @@ public class KernelsBenchWrapper {
         int l = a.length;
         for (int i = 0; i < l; i++) {
             d[i] = 1.0 * a[i] * b[i] + c[i] + 0.0;
+        }
+    }
+
+    private static void sqrtJava(double[] a, double[] b, double[] c) {
+        int l = a.length;
+        for (int i = 0; i < l; i++) {
+            double guess = a[i];
+            double x = b[i];
+            double error = Math.abs(guess * guess * x - 1.0);
+            while (error > 0.00001) {
+                guess = (3.0 * guess - x * guess * guess * guess) * 0.5;
+                error = Math.abs(guess * guess * x - 1.0);
+            }
+            c[i] = x * guess;
         }
     }
 
@@ -72,7 +87,7 @@ public class KernelsBenchWrapper {
         return true;
     }
 
-    private static String inforFormatter(String header, double vectorized_time, double normal_time) {
+    private static String infoFormatter(String header, double vectorized_time, double normal_time) {
         double vectorized_speedup = normal_time / vectorized_time;
         return header + "\n" +
                 "Java kernel time: " + Double.toString(normal_time) + "ms\n" +
@@ -89,7 +104,7 @@ public class KernelsBenchWrapper {
 
         Random random = new Random();
         for (int i = 0; i < size; i++) {
-            float number = -100.0f + random.nextFloat() * 200.0f;
+            float number = random.nextFloat() * 200.0f;
             a[i] = number;
             b[i] = 0.0f;
             c[i] = number;
@@ -124,7 +139,7 @@ public class KernelsBenchWrapper {
         long end_time1 = System.nanoTime();
         double difference1 = (end_time1 - start_time1)/1e6;
 
-        return inforFormatter("Volume function benchmarking...", difference, difference1);
+        return infoFormatter("Volume function benchmarking...", difference, difference1);
     }
 
     public static String saxpxyBenchInfo(String ssize) {
@@ -185,8 +200,60 @@ public class KernelsBenchWrapper {
         long end_time1 = System.nanoTime();
         double difference1 = (end_time1 - start_time1)/1e6;
 
-        return inforFormatter("Saxpy function benchmarking...", difference, difference1);
+        return infoFormatter("Saxpy function benchmarking...", difference, difference1);
+    }
 
+    public static String sqrtBenchInfo(String ssize) {
+        int size = Integer.parseInt(ssize);
+        float[] a = new float[size];
+        float[] b = new float[size];
+        float[] c = new float[size];
+        double[] da = new double[size];
+        double[] db = new double[size];
+        double[] dc = new double[size];
+
+        Random random = new Random();
+        for (int i = 0; i < size; i++) {
+            float number1 = 1.0f;
+            float number2 = 0.001f + random.nextFloat() * 2.998f;
+
+            a[i] = number1;
+            b[i] = number2;
+            c[i] = 0.0f;
+            da[i] = number1;
+            db[i] = number2;
+            dc[i] = 0.0f;
+        }
+
+        // Neon
+        long sizel = size;
+        VecAndroidApi.Kernel k = new KernelOps();
+        FloatBuffer b1 = KernelOps.newBuffer(sizel);
+        FloatBuffer b2 = KernelOps.newBuffer(sizel);
+        FloatBuffer b3 = KernelOps.newBuffer(sizel);
+        b1.put(a);
+        b1.position(0);
+        b2.put(b);
+        b2.position(0);
+        b3.put(c);
+        b3.position(0);
+
+        long start_time = System.nanoTime();
+        for (int iter = 0; iter < 1; iter++){
+            k.map_sqrt(b1, b2, b3);
+        }
+        long end_time = System.nanoTime();
+        double difference = (end_time - start_time)/1e6;
+
+        // Java
+        long start_time1 = System.nanoTime();
+        for (int iter = 0; iter < 1; iter++){
+            sqrtJava(da, db, dc);
+        }
+        long end_time1 = System.nanoTime();
+        double difference1 = (end_time1 - start_time1)/1e6;
+
+        return infoFormatter("Sqrt(guess) function benchmarking...", difference, difference1);
     }
 
     public static Bitmap mandelbrotBenchShow() {
@@ -213,8 +280,8 @@ public class KernelsBenchWrapper {
         col.rewind();
         count.rewind();
         long start_time1 = System.nanoTime();
-//        mandelbrotJava(row, col, count, max, w_m1, h_m1, left, right, top, bottom);
-        k.map_mandelbrot(row, col, count, max, w_m1, h_m1, left, right, top, bottom);
+        mandelbrotJava(row, col, count, max, w_m1, h_m1, left, right, top, bottom);
+//        k.map_mandelbrot(row, col, count, max, w_m1, h_m1, left, right, top, bottom);
         long end_time1 = System.nanoTime();
 //        String flag2 = Float.toString(count.get(0));
         double difference1 = (end_time1 - start_time1)/1e6;
@@ -269,6 +336,6 @@ public class KernelsBenchWrapper {
         long end_time1 = System.nanoTime();
         double difference1 = (end_time1 - start_time1)/1e6;
 
-        return inforFormatter("Mandelbrot function benchmarking...", difference, difference1);
+        return infoFormatter("Mandelbrot function benchmarking...", difference, difference1);
     }
 }

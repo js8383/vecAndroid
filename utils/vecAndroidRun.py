@@ -29,6 +29,8 @@ include $(BUILD_SHARED_LIBRARY)
 
 '''
 
+pre_exist_files = ["Android.mk", "Application.mk", "neon_more.h", "vecandroid-intrinsics.c", "vecandroid-intrinsics.h", "vecandroid.c", "samples"]
+
 def makeArr(kernelFile, outputDir):
 	# Import the file containing all the kernel functions as a module
 	# try
@@ -58,6 +60,11 @@ def makeArr(kernelFile, outputDir):
 		os.remove(filename1)
 	if os.path.exists(filename2):
 		os.remove(filename2)
+
+	file_or_dir_under_jni = [f for f in os.listdir(jni_dir)]
+	for filename3 in file_or_dir_under_jni:
+		if filename3 not in pre_exist_files and filename3[0] != ".":
+			os.remove(jni_dir + "/" + filename3)
 
 	kernel_names = []
 	for k in all_kernels:
@@ -126,7 +133,7 @@ if flag == "-compile":
 		makeArr(sys.argv[2], sys.argv[3])
 		exit(0)
 elif flag == "-help":
-	print("Usage")
+	print("See usage in our project report.")
 else:
 	print("Invalid flag.")
 

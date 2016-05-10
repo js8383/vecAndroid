@@ -36,12 +36,21 @@ public class KernelsBenchActivity extends Activity {
 
         tv0.setText(KernelsBenchWrapper.volumenBenchInfo(ssize));
         tv1.setText(KernelsBenchWrapper.saxpxyBenchInfo(ssize));
-        tv2.setText(KernelsBenchWrapper.mandelbrotBenchInfo());
+        tv2.setText(KernelsBenchWrapper.sqrtBenchInfo(ssize));
+        tv3.setText(KernelsBenchWrapper.mandelbrotBenchInfo());
 //        tv3.setText(KernelsBenchWrapper.mandelbrotBenchShow());
         ll.addView(tv0);
         ll.addView(tv1);
         ll.addView(tv2);
         ll.addView(tv3);
+
+        // Comment out when testing other kernels, as image rendering is time-consuming and
+        // thus slows down the activity loading
+        Bitmap image = KernelsBenchWrapper.mandelbrotBenchShow();
+        ImageView imageView = new ImageView(this);
+        imageView.setImageBitmap(image);
+        ll.addView(imageView);
+
 
     }
 }
