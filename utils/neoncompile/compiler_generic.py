@@ -13,6 +13,7 @@ class Compiler_Generic:
     src += '//Includes'
     src += '#include <math.h>'
     src += '//#include <algorithm>'
+    src += '#include <stdbool.h>'
     src += ''
     #Function header
     src += '//Kernel function: %s'%(k.name)
